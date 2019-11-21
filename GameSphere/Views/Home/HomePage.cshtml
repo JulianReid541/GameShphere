@@ -1,0 +1,15 @@
+﻿@model GameSphere.Models.User
+@{
+    ViewData["Title"] = "HomePage";
+}
+
+<h1>HomePage</h1>
+
+<div>
+    Hello @Model.UserName
+    <div>
+        Following: @Model.Following.Count()
+        Followers: @Model.Followers.Count()
+    </div>
+    
+</div>
