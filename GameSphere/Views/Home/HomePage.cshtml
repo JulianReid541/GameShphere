@@ -7,9 +7,9 @@
 
 <div>
     <div class="col-sm-4 float-left">
-       <div class="text-lg-center border-left border-right border-top border-bottom"> Hello @Model.UserName <br /></div>
+       <div class="text-lg-center border-left border-right border-top border-bottom"> Username: @Model.UserName <br /></div>
         <div class="border-left border-right border-top border-bottom">
-            <a asp-action="Privacy" asp-route-title="@Model.UserName"> Privacy Settings?</a>
+            <a class="text-sm-center" asp-action="Privacy" asp-route-title="@Model.UserName"> Privacy Settings?</a>
         </div>
         <div class="border-left border-right border-top border-bottom">
             <table class="text-center table-bordered" align="center" width="100%">
@@ -19,27 +19,39 @@
                     <th>Followers</th>
                 </tr>               
                 <tr class="">
-                    <td>@Model.Posts.Count()</td>
-                    <td>@Model.Following.Count()</td>
-                    <td>@Model.Followers.Count()</td>
+                    <td>@ViewBag.postCount</td>
+                    <td>@ViewBag.followingCount</td>
+                    <td>@ViewBag.followerCount</td>
                 </tr>
             </table>                  
         </div>
     </div>
 
-    <div class="posts text-center col-lg-8 float-right border-left border-right border-top border-bottom">       
+    <div class="posts text-center col-lg-8 float-right border-left border-right border-top border-bottom">
         @if (Model.Following.Count > 0)
         {
             @foreach (User u in Model.Following)
             {
+                @if (u.Posts.Count > 0)
+                {
+                    @u.Posts[0].User.UserName;<text>: </text> @u.Posts[0].Message
+
+                    <br />
+                }
+                else 
+                {
+                    <div>
+                        Your followers haven't posted anything yet
+                    </div>
+                }
             }
         }
-        
-        @if(Model.Following.Count <= 0)
+
+        @if (Model.Following.Count <= 0)
         {
             <div>
                 You are not following anyone yet
-            </div>         
+            </div>
         }
     </div>
     

@@ -9,18 +9,17 @@ using GameSphere.Models;
 namespace GameSphere.Controllers
 {
     public class HomeController : Controller
-    {
-        //TODO make post model add post lists to user
+    {   //TODO allow users to click on following and followers to see who is following them
+        //TODO allow users to post to the wall and reply to posts
+        //TODO make home profile page with quiz answers showing
         //testingdata
         #region
-        User test1;
-        User test2;
-        Post p;
+
         public HomeController()
         {
             if(Repository.Users.Count == 0)
             {
-                test1 = new User()
+                User test1 = new User()
                 {
                     UserName = "test",
                     Game = "Call of Duty",
@@ -28,9 +27,8 @@ namespace GameSphere.Controllers
                     Genre = "FPS",
                     Platform = "Twitch",
                     Privacy = true
-                };
-                Repository.Users.Add(test1);
-                test2 = new User()
+                };               
+                User test2 = new User()
                 {
                     UserName = "test2",
                     Game = "Halo 4",
@@ -38,18 +36,37 @@ namespace GameSphere.Controllers
                     Genre = "Horror",
                     Platform = "YoutubeGaming",
                     Privacy = false                  
-                };
-                Repository.Users.Add(test2);
-                p = new Post()
+                };               
+                Post p = new Post()
                 {
                     User = test2,
                     Message = "This new site is amazing"
                 };
+                User test3 = new User()
+                {
+                    UserName = "test3",
+                    Game = "Halo 5",
+                    Console = "PC",
+                    Genre = "Horror",
+                    Platform = "YoutubeGaming",
+                    Privacy = false
+                };
+                Post p2 = new Post()
+                {
+                    User = test3,
+                    Message = "This is WAY COOLER THAN FACEBOOK"
+                };
                 test2.AddPost(p);
+                test3.AddPost(p2);
                 test1.AddFollowing(test2);
+                test1.AddFollowing(test3);
                 test1.AddFollower(test2);
                 test2.AddFollower(test1);
                 test2.AddFollowing(test1);
+                test3.AddFollower(test1);
+                Repository.Users.Add(test3);
+                Repository.Users.Add(test2);
+                Repository.Users.Add(test1);
             }
         }
         #endregion
@@ -62,8 +79,7 @@ namespace GameSphere.Controllers
 
         [HttpPost]
         public RedirectToActionResult Index(string u)
-        {
-            List<User> users = Repository.Users;
+        {         
             User user = Repository.GetUserByUserName(u);          
             if (user == null)
                 return RedirectToAction("Index");
@@ -72,12 +88,12 @@ namespace GameSphere.Controllers
         }
 
         public ActionResult HomePage(User user)
-        {
-            //TODO create wall displaying USER's Posts and following posts chronologically
-            ViewBag.postCount = user.Posts.Count;
-            ViewBag.followingCount = user.Following.Count;
-            ViewBag.followerCount = user.Followers.Count;
-            return View(user);
+        {           
+            User u = Repository.GetUserByUserName(user.UserName);
+            ViewBag.postCount = u.Posts.Count;
+            ViewBag.followingCount = u.Following.Count;
+            ViewBag.followerCount = u.Followers.Count;
+            return View(u);
         }
 
         [HttpGet]
@@ -103,8 +119,7 @@ namespace GameSphere.Controllers
 
         [HttpGet]
         public IActionResult Privacy(string title)
-        {
-            //TODO create setting check to allow quiz results to be saved and shown or not
+        {         
             return View("Privacy", title);
         }
 
