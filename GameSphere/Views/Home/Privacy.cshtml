@@ -1,0 +1,16 @@
+﻿@model String
+@{
+    ViewData["Title"] = "Privacy Settings";
+}
+
+<h1>Privacy Settings for <em>@Model</em></h1>
+
+<div>
+    <form method="post">
+        <div>
+            <input type="radio" name="privacy" value="true" /> True
+            <input type="radio" name="privacy" value="false" /> False
+        </div>
+        <input type="submit" class="btn btn-primary" value="Enter" />
+    </form>
+</div>

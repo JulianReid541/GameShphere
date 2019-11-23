@@ -5,10 +5,40 @@
 
 <h1>SignUp</h1>
 
-<div class="text-center">
-    <form class="form-group" method="post">
-        <label class="form-control-sm" for="username">Username</label><br />
-        <input class="form-control-sm" name="username" /><br />
-        <input type="submit" value="Enter" />
+<div>
+    <form method="post">
+        <div class="form-group">
+            <label class="form-control-sm" for="username">Username</label>
+            <input class="form-control-sm" name="username" />
+        </div>
+        <div class="form-group">
+            <label class="form-control-sm" for="game">Favorite Game:</label>
+            <input class="form-control-sm" name="game" /><br />
+            <label class="form-control-sm" for="console">Favorite Console:</label>
+            <input type="radio" name="console" value="playstation" /> Playstation
+            <input type="radio" name="console" value="xbox" checked /> Xbox
+            <input type="radio" name="console" value="pc" /> PC
+        </div>
+        <div>
+            <label class="form-control-sm" for="genre">Favorite Genre:</label>
+            <select name="genre">
+                <option value="horror">Horror</option>
+                <option value="fps">FPS</option>
+                <option value="singleplayer">Horror</option>
+            </select>
+        </div>
+        <div>
+            <label class="form-control-sm" for="platform">Favorite Streaming Platform:</label>
+            <select name="platform">
+                <option value="twitch">Twitch</option>
+                <option value="youtube">YoutubeGaming</option>
+                <option value="mixer">Mixer</option>
+            </select>
+        </div>
+        <div>
+            <input type="radio" name="privacy" value="true" /> True
+            <input type="radio" name="privacy" value="false" /> False
+        </div>
+        <input type="submit" class="btn btn-primary" value="Enter" />
     </form>
 </div>

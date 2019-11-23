@@ -3,13 +3,44 @@
     ViewData["Title"] = "HomePage";
 }
 
-<h1>HomePage</h1>
+<h1>Homepage</h1>
 
 <div>
-    Hello @Model.UserName
-    <div>
-        Following: @Model.Following.Count()
-        Followers: @Model.Followers.Count()
+    <div class="col-sm-4 float-left">
+       <div class="text-lg-center border-left border-right border-top border-bottom"> Hello @Model.UserName <br /></div>
+        <div class="border-left border-right border-top border-bottom">
+            <a asp-action="Privacy" asp-route-title="@Model.UserName"> Privacy Settings?</a>
+        </div>
+        <div class="border-left border-right border-top border-bottom">
+            <table class="text-center table-bordered" align="center" width="100%">
+                <tr>                
+                    <th>Posts</th>
+                    <th>Following</th>
+                    <th>Followers</th>
+                </tr>               
+                <tr class="">
+                    <td>@Model.Posts.Count()</td>
+                    <td>@Model.Following.Count()</td>
+                    <td>@Model.Followers.Count()</td>
+                </tr>
+            </table>                  
+        </div>
+    </div>
+
+    <div class="posts text-center col-lg-8 float-right border-left border-right border-top border-bottom">       
+        @if (Model.Following.Count > 0)
+        {
+            @foreach (User u in Model.Following)
+            {
+            }
+        }
+        
+        @if(Model.Following.Count <= 0)
+        {
+            <div>
+                You are not following anyone yet
+            </div>         
+        }
     </div>
     
 </div>
