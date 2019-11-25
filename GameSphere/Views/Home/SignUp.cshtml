@@ -24,7 +24,7 @@
             <select name="genre">
                 <option value="horror">Horror</option>
                 <option value="fps">FPS</option>
-                <option value="singleplayer">Horror</option>
+                <option value="singleplayer">Singleplayer</option>
             </select>
         </div>
         <div>
@@ -36,8 +36,9 @@
             </select>
         </div>
         <div>
-            <input type="radio" name="privacy" value="true" /> True
-            <input type="radio" name="privacy" value="false" /> False
+            <label class="form-control-sm" for="privacy">Do you want your answers to be public?</label>
+            <input type="radio" name="privacy" value="true" /> Yes
+            <input type="radio" name="privacy" value="false" /> No
         </div>
         <input type="submit" class="btn btn-primary" value="Enter" />
     </form>

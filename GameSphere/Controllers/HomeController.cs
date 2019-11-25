@@ -11,7 +11,8 @@ namespace GameSphere.Controllers
     public class HomeController : Controller
     {  
         //TODO allow users to post to the wall and reply to posts
-        //TODO make home profile page with quiz answers showing
+        //TODO allow users to follow and unfollow people
+        //TODO make page better looking and MAKE COMMENTS
         //testingdata
         #region
 
@@ -49,7 +50,7 @@ namespace GameSphere.Controllers
                     Console = "PC",
                     Genre = "Horror",
                     Platform = "YoutubeGaming",
-                    Privacy = false
+                    Privacy = true
                 };
                 Post p2 = new Post()
                 {
@@ -165,6 +166,12 @@ namespace GameSphere.Controllers
             }
             ViewBag.user = u.UserName;
             return View(followers);
+        }
+
+        public IActionResult ProfilePage(string title)
+        {
+            User u = Repository.GetUserByUserName(title);
+            return View(u);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

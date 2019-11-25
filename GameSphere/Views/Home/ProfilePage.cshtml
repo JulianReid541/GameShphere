@@ -1,0 +1,24 @@
+﻿@model GameSphere.Models.User
+@{
+    ViewData["Title"] = "ProfilePage";
+}
+
+<h1>Profile Page for @Model.UserName</h1>
+<div>
+    @if (Model.Privacy == true)
+    {
+        <div>
+            Game: @Model.Game <br />
+            Console: @Model.Console <br />         
+            Genre: @Model.Genre <br />
+            Platform: @Model.Platform <br />
+        </div>
+    }
+    else
+    {
+        <div>
+            This user has chosen not to show their quiz answers
+        </div>
+    }
+</div>
+
