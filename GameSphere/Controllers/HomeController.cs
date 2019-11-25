@@ -9,7 +9,7 @@ using GameSphere.Models;
 namespace GameSphere.Controllers
 {
     public class HomeController : Controller
-    {   //TODO allow users to click on following and followers to see who is following them
+    {  
         //TODO allow users to post to the wall and reply to posts
         //TODO make home profile page with quiz answers showing
         //testingdata
@@ -129,6 +129,42 @@ namespace GameSphere.Controllers
             User user = Repository.GetUserByUserName(title);
             user.changeUserPrivacy(privacy);
             return RedirectToAction("Homepage", user);
+        }
+
+        public IActionResult PostList(string title)
+        {
+            List<Post> posts = new List<Post>();
+            User u = Repository.GetUserByUserName(title);
+            foreach (Post p in u.Posts)
+            {
+                posts.Add(p);
+            }
+            ViewBag.user = u.UserName;
+            return View(posts);
+        }
+
+        public IActionResult FollowingList(string title)
+        {
+            List<User> following = new List<User>();
+            User u = Repository.GetUserByUserName(title);
+            foreach (User f in u.Following)
+            {
+                following.Add(f);
+            }
+            ViewBag.user = u.UserName;
+            return View(following);
+        }
+
+        public IActionResult FollowersList(string title)
+        {
+            List<User> followers = new List<User>();
+            User u = Repository.GetUserByUserName(title);
+            foreach (User f in u.Followers)
+            {
+                followers.Add(f);
+            }
+            ViewBag.user = u.UserName;
+            return View(followers);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
