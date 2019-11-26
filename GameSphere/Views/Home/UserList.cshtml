@@ -1,0 +1,27 @@
+﻿@model List<User>
+@{
+    ViewData["Title"] = "UserList";
+}
+
+<h1>User on Gamesphere</h1>
+
+
+<div class="container">
+    <div class="row">
+        @foreach (User u in Model)
+        {
+           
+            <div class="col-md-6">
+                <div class="card text-center">
+                    <div class="card-header">Username: @u.UserName</div>
+                    <div class="card-body">
+                            Following: @u.Following.Count
+                            Followers: @u.Followers.Count<br />
+                            <a asp-action="ProfilePage" asp-route-title="@u.UserName">Profile</a>
+                    </div>
+                </div>
+            </div>
+           
+        }
+    </div>
+</div>

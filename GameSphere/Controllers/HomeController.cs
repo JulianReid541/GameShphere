@@ -12,7 +12,7 @@ namespace GameSphere.Controllers
     {  
         //TODO allow users to post to the wall and reply to posts
         //TODO allow users to follow and unfollow people
-        //TODO make page better looking and MAKE COMMENTS
+        //TODO make pages look better looking and MAKE COMMENTS
         //testingdata
         #region
 
@@ -172,6 +172,13 @@ namespace GameSphere.Controllers
         {
             User u = Repository.GetUserByUserName(title);
             return View(u);
+        }
+
+        public IActionResult UserList()
+        {
+            List<User> users = Repository.Users;           
+            ViewBag.usercount = users.Count;
+            return View(users);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
