@@ -1,21 +1,26 @@
 ﻿@{
+    Layout = null;
     ViewData["Title"] = "Sign In";
 }
-
-<h1 class="">Sign In</h1>
-<div class="text-center"> 
-    <form class="form-group" method="post">
-        <label class="form-control-sm" for="u">Username</label><br />
-        <input class="form-control-sm" name="u" /><br />
-        <input type="submit" value="Enter" />
-    </form>
-</div>
-
-<div class="card" style="width: 18rem;">
-    <div class="card-header">
-    Don't have an account?
-    </div>
-    <div class="card-body">
-        <a class="nav-link" asp-action="SignUp">Sign Up</a>
-    </div>
-</div>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>@ViewData["Title"] - GameSphere</title>
+        <link rel="stylesheet" href="~/css/signin.css" />
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    </head>
+    <body class="text-center">
+        <form class="form-signin" method="post">
+            <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+            <label for="u" class="sr-only">Username</label>
+            <input class="form-control" placeholder="Username" name="u" /><br />
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button><br />
+            <div class="mb-1">
+                <a class="text-muted" asp-action="SignUp">Don't have an account? Sign Up</a>
+            </div>
+            <p class="mt-5 mb-3 text-muted">&copy; 2019-2020</p>
+        </form>
+    </body>
+</html>
