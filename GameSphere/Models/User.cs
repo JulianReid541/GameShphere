@@ -11,7 +11,7 @@ namespace GameSphere.Models
         private List<User> following = new List<User>();
         private List<Post> posts = new List<Post>();
 
-        public Guid userID;
+        public int userID;
         public string UserName { get; set; }
         public string Game { get; set; }
         public string Console { get; set; }
@@ -36,6 +36,11 @@ namespace GameSphere.Models
         public void AddPost(Post p)
         {
             Posts.Add(p);
+        }
+
+        public void RemoveFollow(User user)
+        {
+            Following.Remove(user);
         }
 
         public bool changeUserPrivacy(bool tf)

@@ -17,11 +17,13 @@
                     <div class="card-body">
                             Following: @u.Following.Count
                             Followers: @u.Followers.Count<br />
-                            <a asp-action="ProfilePage" asp-route-title="@u.UserName">Profile</a>
+                            <a asp-action="ProfilePage" asp-route-title="@u.UserName">Profile</a>                            
+                    </div>
+                    <div>
+                        <a asp-action="Follow" asp-route-title="@u.UserName">Follow</a>
                     </div>
                 </div>
-            </div>
-           
+            </div>          
         }
     </div>
 </div>

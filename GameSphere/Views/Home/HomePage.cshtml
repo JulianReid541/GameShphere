@@ -3,7 +3,7 @@
     ViewData["Title"] = "HomePage";
 }
 
-<h1>Homepage</h1>
+<h1 class="text-center">Homepage</h1>
 
 <div>
     <div class="col-sm-4 float-left">
@@ -25,34 +25,65 @@
                 </tr>
             </table>                  
         </div>
+        <br />
+        <div class="text-center border-bottom border-left border-right">
+            <form method="post">
+                <div class="form-group">
+                    <label for="postMessage" class="form-control-sm">Make a Post!</label>
+                    <input class="form-control-sm" name="postMessage" />
+                </div>
+                <button type="submit" value="Post!">Post!</button>
+            </form>
+        </div>
     </div>
 
     <div class="posts text-center col-lg-8 float-right border-left border-right border-top border-bottom">
-        @if (Model.Following.Count > 0)
-        {
-            @foreach (User u in Model.Following)
+        <div class="border-bottom">
+            <h1>Your Posts</h1>
+            @if (Model.Posts.Count > 0)
             {
-                @if (u.Posts.Count > 0)
+                @foreach (var p in Model.Posts)
                 {
-                    <a asp-action="ProfilePage" asp-route-title="@u.Posts[0].User.UserName"> @u.Posts[0].User.UserName</a><text>: </text> @u.Posts[0].Message
+                    <a asp-action="ProfilePage" asp-route-title="p.Posts[0].User.UserName"> @p.User.UserName</a><text>: </text> @p.Message
 
                     <br />
                 }
-                else 
+            }
+            else
+            {
+                <div>
+                    You haven't posted anything yet
+                </div>
+            }
+        </div>
+        <div>
+            <h1>Followers Posts</h1>
+            @if (Model.Following.Count > 0)
+            {
+                @foreach (User u in Model.Following)
                 {
-                    <div>
-                        Your followers haven't posted anything yet
-                    </div>
+                    @if (u.Posts.Count > 0)
+                    {
+                        <a asp-action="ProfilePage" asp-route-title="@u.Posts[0].User.UserName"> @u.Posts[0].User.UserName</a><text>: </text> @u.Posts[0].Message
+
+                        <br />
+                    }
+                    else
+                    {
+                        <div>
+                            Your followers haven't posted anything yet
+                        </div>
+                    }
                 }
             }
-        }
 
-        @if (Model.Following.Count <= 0)
-        {
-            <div>
-                You are not following anyone yet
-            </div>
-        }
+            @if (Model.Following.Count <= 0)
+            {
+                <div>
+                    You are not following anyone yet
+                </div>
+            }
+        </div>
     </div>
     
 </div>

@@ -5,14 +5,16 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using GameSphere.Models;
+using System.Web;
+using System.Data;
 
 namespace GameSphere.Controllers
-{
+{  
     public class HomeController : Controller
-    {  
-        //TODO allow users to post to the wall and reply to posts
-        //TODO allow users to follow and unfollow people
+    {     
         //TODO make pages look better looking and MAKE COMMENTS
+        //TODO write some tests 
+        //TODO use EF to make a database
         //testingdata
         #region
 
@@ -71,7 +73,6 @@ namespace GameSphere.Controllers
             }
         }
         #endregion
-
         [HttpGet]
         public IActionResult Index()
         {         
@@ -80,21 +81,38 @@ namespace GameSphere.Controllers
 
         [HttpPost]
         public RedirectToActionResult Index(string u)
-        {         
-            User user = Repository.GetUserByUserName(u);          
+        {
+            User user = Repository.GetUserByUserName(u);
+            TempData["signedInUser"] = u as string;
             if (user == null)
                 return RedirectToAction("Index");
             else
                 return RedirectToAction("HomePage", user);
         }
 
-        public ActionResult HomePage(User user)
-        {           
-            User u = Repository.GetUserByUserName(user.UserName);
+        [HttpGet]
+        public IActionResult HomePage(User user)
+        {
+            User u = Repository.GetUserByUserName(user.UserName);            
             ViewBag.postCount = u.Posts.Count;
             ViewBag.followingCount = u.Following.Count;
             ViewBag.followerCount = u.Followers.Count;
             return View(u);
+        }
+
+        [HttpPost]
+        public RedirectToActionResult HomePage(string postMessage)
+        {
+            User u = Repository.GetUserByUserName(TempData["signedInUser"] as string);
+            TempData.Keep();
+            Post p = new Post()
+            {
+                User = u,
+                Message = postMessage
+            };
+
+            u.AddPost(p);
+            return RedirectToAction("HomePage", u);
         }
 
         [HttpGet]
@@ -179,6 +197,33 @@ namespace GameSphere.Controllers
             List<User> users = Repository.Users;           
             ViewBag.usercount = users.Count;
             return View(users);
+        }
+
+        public RedirectToActionResult Unfollow(string title)
+        {
+            User u = Repository.GetUserByUserName(title);
+            User u2 = Repository.GetUserByUserName(TempData["signedInUser"] as string);
+            TempData.Keep();
+            u2.RemoveFollow(u);
+            return RedirectToAction("HomePage", u2);
+        }       
+
+        public ActionResult Follow(string title)
+        {
+            User u = Repository.GetUserByUserName(title);
+            User u2 = Repository.GetUserByUserName(TempData["signedInUser"] as string);
+            TempData.Keep();
+            if (u2.UserName == u.UserName)
+            {
+                return Content("You can't follow yourself");
+            }
+            if (u2.Following.Contains(u))
+            {
+                return Content("You are already following that person");
+            }
+            else
+                u2.AddFollowing(u);           
+            return View("UserList");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
