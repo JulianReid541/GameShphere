@@ -2,31 +2,31 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace GameSphere.Models
 {
     public class Repository : IRepository
     {
-        private static List<User> users = new List<User>();
+        private ApplicationDbContext context;
 
-        public List<User> Users { get { return users; } }
-
-        public Repository()
+        public Repository(ApplicationDbContext appDbContext)
         {
-            if (users.Count == 0)
-            {
-                AddSeedData();
-            }
+            context = appDbContext;
         }
+
+        public List<User> Users { get { return context.Users.Include("Posts").ToList(); } }
 
         public void AddUser(User user)
         {
-            users.Add(user);
+            context.Users.Add(user);
+            context.SaveChanges();
         }
 
         public User GetUserByUserName(string username)
         {
-            User user = users.Find(u => u.UserName == username);
+            User user;
+                user = context.Users.First(u => u.UserName == username);
             return user;
         }
 
