@@ -11,23 +11,25 @@ using System.Data;
 namespace GameSphere.Controllers
 {  
     public class HomeController : Controller
-    {
-        //TODO write some tests 
+    {       
         //TODO use EF to make a database
-        //testingdata
-
+        
         IRepository Repository;
         public HomeController(IRepository r)
         {
             Repository = r;
         }
 
+        //Sign in PAGE
         [HttpGet]
         public IActionResult Index()
         {         
             return View();
         }
 
+        //takes username as string and checks repository to see if user exists
+        //if user is null it returns to sign in page
+        //Otherwise it saves user as Tempdata/SignedInUser and redirects to the homepage
         [HttpPost]
         public RedirectToActionResult Index(string u)
         {
@@ -39,6 +41,7 @@ namespace GameSphere.Controllers
                 return RedirectToAction("HomePage", user);
         }
 
+        //Homepage taking user object and displays posts and counts for user posts/follows/following
         [HttpGet]
         public IActionResult HomePage(User user)
         {
@@ -49,6 +52,7 @@ namespace GameSphere.Controllers
             return View(u);
         }
 
+        //Takes postmessage and adds user to post saves it to post
         [HttpPost]
         public RedirectToActionResult HomePage(string postMessage)
         {
@@ -64,12 +68,14 @@ namespace GameSphere.Controllers
             return RedirectToAction("HomePage", u);
         }
 
+        //Returns signup page
         [HttpGet]
         public IActionResult SignUp()
         {          
             return View();
         }
 
+        //Takes username and quiz answers. Creates a new user
         [HttpPost]
         public RedirectToActionResult SignUp(string username, string game, string console,
                                              string genre, string platform, bool privacy)
@@ -85,12 +91,14 @@ namespace GameSphere.Controllers
             return RedirectToAction("Index");
         }
 
+        //Privacy view. Allows user to change quiz result privacy T/F
         [HttpGet]
         public IActionResult Privacy(string title)
         {         
             return View("Privacy", title);
         }
 
+        //Changes user Privacy and redirects to homepage when done
         [HttpPost]
         public RedirectToActionResult Privacy(string title, bool privacy)
         {
@@ -99,6 +107,7 @@ namespace GameSphere.Controllers
             return RedirectToAction("Homepage", user);
         }
 
+        //List of posts from user
         public IActionResult PostList(string title)
         {
             List<Post> posts = new List<Post>();
@@ -111,6 +120,7 @@ namespace GameSphere.Controllers
             return View(posts);
         }
 
+        //List of every person the signed in user is following
         public IActionResult FollowingList(string title)
         {
             List<User> following = new List<User>();
@@ -123,6 +133,7 @@ namespace GameSphere.Controllers
             return View(following);
         }
 
+        //List of followers the signed in user has
         public IActionResult FollowersList(string title)
         {
             List<User> followers = new List<User>();
@@ -135,12 +146,14 @@ namespace GameSphere.Controllers
             return View(followers);
         }
 
+        //Displays username and quiz results for selected user
         public IActionResult ProfilePage(string title)
         {
             User u = Repository.GetUserByUserName(title);
             return View(u);
         }
 
+        //List of all users on the site
         public IActionResult UserList()
         {
             List<User> users = new List<User>();
@@ -153,6 +166,7 @@ namespace GameSphere.Controllers
             return View(users);
         }
 
+        //Unfollows selected user
         public RedirectToActionResult Unfollow(string title)
         {
             User u = Repository.GetUserByUserName(title);
@@ -163,6 +177,7 @@ namespace GameSphere.Controllers
             return RedirectToAction("HomePage", u2);
         }       
 
+        //Follows selected user
         public RedirectToActionResult Follow(string title)
         {
             User u = Repository.GetUserByUserName(title);
@@ -184,12 +199,14 @@ namespace GameSphere.Controllers
             return RedirectToAction("UserList");
         }
 
+        //Result if User tries to follow himself
         public IActionResult FollowResult1()
         {
             ViewBag.followResult = "You can't follow yourself";
             return View();
         }
 
+        //Result if user is already following someone 
         public IActionResult FollowResult2()
         {
             ViewBag.followResult = "You already follow that person";
