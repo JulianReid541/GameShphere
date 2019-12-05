@@ -194,7 +194,12 @@ namespace GameSphere.Controllers
 
         public IActionResult UserList()
         {
-            List<User> users = Repository.Users;           
+            List<User> users = new List<User>();
+            foreach (User u in Repository.Users)
+            {
+                users.Add(u);
+            }
+
             ViewBag.usercount = users.Count;
             return View(users);
         }
@@ -205,25 +210,41 @@ namespace GameSphere.Controllers
             User u2 = Repository.GetUserByUserName(TempData["signedInUser"] as string);
             TempData.Keep();
             u2.RemoveFollow(u);
+            u.RemovingFollower(u2);
             return RedirectToAction("HomePage", u2);
         }       
 
-        public ActionResult Follow(string title)
+        public RedirectToActionResult Follow(string title)
         {
             User u = Repository.GetUserByUserName(title);
             User u2 = Repository.GetUserByUserName(TempData["signedInUser"] as string);
             TempData.Keep();
             if (u2.UserName == u.UserName)
-            {
-                return Content("You can't follow yourself");
+            {                
+                return RedirectToAction("FollowResult1");
             }
             if (u2.Following.Contains(u))
-            {
-                return Content("You are already following that person");
+            {               
+                return RedirectToAction("FollowResult2");
             }
             else
-                u2.AddFollowing(u);           
-            return View("UserList");
+            {
+                u2.AddFollowing(u);
+                u.AddFollower(u2);
+            }               
+            return RedirectToAction("UserList");
+        }
+
+        public IActionResult FollowResult1()
+        {
+            ViewBag.followResult = "You can't follow yourself";
+            return View();
+        }
+
+        public IActionResult FollowResult2()
+        {
+            ViewBag.followResult = "You already follow that person";
+            return View();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

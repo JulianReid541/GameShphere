@@ -6,7 +6,7 @@
 <h1 class="text-center">Homepage</h1>
 
 <div>
-    <div class="col-sm-4 float-left">
+    <div class="container-fluid col-sm-4 float-left">
        <div class="text-lg-center border-left border-right border-top border-bottom"> Username: <a asp-action="ProfilePage" asp-route-title="@Model.UserName">@Model.UserName</a><br /></div>
         <div class="border-left border-right border-top border-bottom" align="center">
             <a class="text-sm-center" asp-action="Privacy" asp-route-title="@Model.UserName"> Privacy Settings?</a>
@@ -37,7 +37,7 @@
         </div>
     </div>
 
-    <div class="posts text-center col-lg-8 float-right border-left border-right border-top border-bottom">
+    <div class="container-fluid text-center col-lg-8 float-right border-left border-right border-top border-bottom">
         <div class="border-bottom">
             <h1>Your Posts</h1>
             @if (Model.Posts.Count > 0)

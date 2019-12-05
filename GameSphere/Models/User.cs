@@ -43,6 +43,11 @@ namespace GameSphere.Models
             Following.Remove(user);
         }
 
+        public void RemovingFollower (User user)
+        {
+            Followers.Remove(user);
+        }
+
         public bool changeUserPrivacy(bool tf)
         {
             if (tf == Privacy)
