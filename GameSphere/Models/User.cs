@@ -11,7 +11,7 @@ namespace GameSphere.Models
         private List<User> following = new List<User>();
         private List<Post> posts = new List<Post>();
 
-        public int userID;
+        public int userID { get; set; }
         public string UserName { get; set; }
         public string Game { get; set; }
         public string Console { get; set; }
