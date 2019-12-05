@@ -81,6 +81,5 @@ namespace GameSphere.Models
             AddUser(test2);
             AddUser(test1);
         }
-    }
-    }
+    }    
 }
