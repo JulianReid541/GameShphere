@@ -15,7 +15,7 @@ namespace GameSphere.Models
             context = appDbContext;
         }
 
-        public List<User> Users { get { return context.Users.Include("Posts").ToList(); } }
+        public List<User> Users { get { return context.Users.Include("Posts").ToList(); } }       
 
         public void AddUser(User user)
         {
@@ -23,63 +23,25 @@ namespace GameSphere.Models
             context.SaveChanges();
         }
 
+        public void UpdateUser(User u)
+        {
+            context.Users.Update(u);
+            context.SaveChanges();
+        }
+
+        public void AddPost(Post p , User u)
+        {
+            u.AddPost(p);
+            context.Posts.Add(p);           
+            context.Users.Update(u);
+            context.SaveChanges();
+        }
+
         public User GetUserByUserName(string username)
         {
             User user;
-                user = context.Users.First(u => u.UserName == username);
+            user = context.Users.First(u => u.UserName == username);                       
             return user;
-        }
-
-        void AddSeedData()
-        {
-            User test1 = new User()
-            {
-                UserName = "test",
-                Game = "Call of Duty",
-                Console = "Xbox",
-                Genre = "FPS",
-                Platform = "Twitch",
-                Privacy = true
-            };
-            User test2 = new User()
-            {
-                UserName = "test2",
-                Game = "Halo 4",
-                Console = "PC",
-                Genre = "Horror",
-                Platform = "YoutubeGaming",
-                Privacy = false
-            };
-            Post p = new Post()
-            {
-                User = test2,
-                Message = "This new site is amazing"
-            };
-            User test3 = new User()
-            {
-                UserName = "test3",
-                Game = "Halo 5",
-                Console = "PC",
-                Genre = "Horror",
-                Platform = "YoutubeGaming",
-                Privacy = true
-            };
-            Post p2 = new Post()
-            {
-                User = test3,
-                Message = "This is WAY COOLER THAN FACEBOOK"
-            };
-            test2.AddPost(p);
-            test3.AddPost(p2);
-            test1.AddFollowing(test2);
-            test1.AddFollowing(test3);
-            test1.AddFollower(test2);
-            test2.AddFollower(test1);
-            test2.AddFollowing(test1);
-            test3.AddFollower(test1);
-            AddUser(test3);
-            AddUser(test2);
-            AddUser(test1);
-        }
+        }       
     }    
 }

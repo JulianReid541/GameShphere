@@ -10,6 +10,8 @@ namespace GameSphere.Models
     {
         List<User> Users { get; }
         void AddUser(User user);
+        void UpdateUser(User user);
+        void AddPost(Post p, User u);
         User GetUserByUserName(string username);
     }
 }

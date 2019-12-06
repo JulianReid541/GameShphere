@@ -44,7 +44,7 @@ namespace GameSphere.Controllers
         //Homepage taking user object and displays posts and counts for user posts/follows/following
         [HttpGet]
         public IActionResult HomePage(User user)
-        {
+        {           
             User u = Repository.GetUserByUserName(user.UserName);            
             ViewBag.postCount = u.Posts.Count;
             ViewBag.followingCount = u.Following.Count;
@@ -64,7 +64,7 @@ namespace GameSphere.Controllers
                 Message = postMessage
             };
 
-            u.AddPost(p);
+            Repository.AddPost(p, u);
             return RedirectToAction("HomePage", u);
         }
 
@@ -87,7 +87,7 @@ namespace GameSphere.Controllers
             user.Genre = genre;
             user.Platform = platform;
             user.Privacy = privacy;
-            Repository.Users.Add(user);
+            Repository.AddUser(user);
             return RedirectToAction("Index");
         }
 
@@ -103,7 +103,8 @@ namespace GameSphere.Controllers
         public RedirectToActionResult Privacy(string title, bool privacy)
         {
             User user = Repository.GetUserByUserName(title);
-            user.changeUserPrivacy(privacy);
+            user.ChangeUserPrivacy(privacy);
+            Repository.UpdateUser(user);
             return RedirectToAction("Homepage", user);
         }
 
@@ -111,7 +112,7 @@ namespace GameSphere.Controllers
         public IActionResult PostList(string title)
         {
             List<Post> posts = new List<Post>();
-            User u = Repository.GetUserByUserName(title);
+            User u = Repository.GetUserByUserName(title);            
             foreach (Post p in u.Posts)
             {
                 posts.Add(p);
@@ -174,6 +175,8 @@ namespace GameSphere.Controllers
             TempData.Keep();
             u2.RemoveFollow(u);
             u.RemovingFollower(u2);
+            Repository.UpdateUser(u);
+            Repository.UpdateUser(u2);
             return RedirectToAction("HomePage", u2);
         }       
 
@@ -195,6 +198,8 @@ namespace GameSphere.Controllers
             {
                 u2.AddFollowing(u);
                 u.AddFollower(u2);
+                Repository.UpdateUser(u);
+                Repository.UpdateUser(u2);
             }               
             return RedirectToAction("UserList");
         }

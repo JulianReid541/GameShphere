@@ -16,6 +16,10 @@ namespace GameSphere.Models
             users.Add(user);
         }
 
+        public void UpdateUser(User user) { }
+
+        public void AddPost(Post p, User U) { }
+
         public User GetUserByUserName(string username)
         {
             User user = users.Find(u => u.UserName == username);
