@@ -42,11 +42,18 @@ namespace GameSphere.Controllers
         }
 
         //Homepage taking user object and displays posts and counts for user posts/follows/following
-        [HttpGet]
-        public IActionResult HomePage(User user)
-        {           
-            User u = Repository.GetUserByUserName(user.UserName);            
-            ViewBag.postCount = u.Posts.Count;
+        [HttpGet]       
+        public ActionResult HomePage(User user)
+        {
+            List<Post> posts = new List<Post>();
+            List<Post> dbLists = Repository.Posts;
+            User u = Repository.GetUserByUserName(user.UserName);
+            foreach (Post p in dbLists.Where(p => p.User.UserName == u.UserName))
+            {
+                posts.Add(p);
+            }
+
+            ViewBag.postCount = posts.Count;
             ViewBag.followingCount = u.Following.Count;
             ViewBag.followerCount = u.Followers.Count;
             return View(u);
@@ -111,14 +118,16 @@ namespace GameSphere.Controllers
         //List of posts from user
         public IActionResult PostList(string title)
         {
-            List<Post> posts = new List<Post>();
-            User u = Repository.GetUserByUserName(title);            
-            foreach (Post p in u.Posts)
+            List<Post> userPosts = new List<Post>();
+            List<Post> posts = Repository.Posts;
+            User u = Repository.GetUserByUserName(title);
+
+            foreach (Post p in posts.Where(p => p.User.UserName == u.UserName))
             {
-                posts.Add(p);
+                userPosts.Add(p);
             }
             ViewBag.user = u.UserName;
-            return View(posts);
+            return View(userPosts);
         }
 
         //List of every person the signed in user is following
@@ -158,7 +167,8 @@ namespace GameSphere.Controllers
         public IActionResult UserList()
         {
             List<User> users = new List<User>();
-            foreach (User u in Repository.Users)
+            List<User> dbUsers = Repository.Users;
+            foreach (User u in dbUsers)
             {
                 users.Add(u);
             }
@@ -174,9 +184,9 @@ namespace GameSphere.Controllers
             User u2 = Repository.GetUserByUserName(TempData["signedInUser"] as string);
             TempData.Keep();
             u2.RemoveFollow(u);
+            Repository.UpdateUser(u2);
             u.RemovingFollower(u2);
             Repository.UpdateUser(u);
-            Repository.UpdateUser(u2);
             return RedirectToAction("HomePage", u2);
         }       
 
@@ -197,9 +207,9 @@ namespace GameSphere.Controllers
             else
             {
                 u2.AddFollowing(u);
+                Repository.UpdateUser(u2);
                 u.AddFollower(u2);
                 Repository.UpdateUser(u);
-                Repository.UpdateUser(u2);
             }               
             return RedirectToAction("UserList");
         }

@@ -35,7 +35,7 @@ namespace GameSphere.Models
 
         public void AddPost(Post p)
         {
-            posts.Add(p);
+            Posts.Add(p);
         }
 
         public void RemoveFollow(User user)

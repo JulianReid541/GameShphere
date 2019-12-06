@@ -9,7 +9,9 @@ namespace GameSphere.Models
     public class FakeRepository : IRepository
     {
         private List<User> users = new List<User>();
+        private List<Post> posts = new List<Post>();
         public List<User> Users { get { return users; } }
+        public List<Post> Posts { get { return Posts; } }
 
         public void AddUser(User user)
         {

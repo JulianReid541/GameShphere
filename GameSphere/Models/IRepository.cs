@@ -9,6 +9,7 @@ namespace GameSphere.Models
     public interface IRepository
     {
         List<User> Users { get; }
+        List<Post> Posts { get; }
         void AddUser(User user);
         void UpdateUser(User user);
         void AddPost(Post p, User u);

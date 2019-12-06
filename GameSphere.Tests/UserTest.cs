@@ -90,7 +90,7 @@ namespace GameSphere.Tests
         [Fact]
         public void FollowTest()
         {
-            //Arrange 
+            //Arrange         
             var repo = new FakeRepository();
             AddTestData(repo);
             var controller = new HomeController(repo);
@@ -107,7 +107,7 @@ namespace GameSphere.Tests
             Assert.Contains(u, u2.Followers);
             Assert.Single(u.Following);
             Assert.Contains(u, u2.Followers);
-        }
+        }     
 
         //TestData
         #region

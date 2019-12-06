@@ -22,7 +22,7 @@ namespace GameSphere.Models
                     Platform = "Twitch",
                     Privacy = true
                 };
-                context.Add(test1);
+                context.Users.Add(test1);
                 User test2 = new User()
                 {
                     UserName = "test2",
@@ -32,7 +32,7 @@ namespace GameSphere.Models
                     Platform = "YoutubeGaming",
                     Privacy = false
                 };
-                context.Add(test2);
+                context.Users.Add(test2);
                 User test3 = new User()
                 {
                     UserName = "test3",
@@ -42,7 +42,7 @@ namespace GameSphere.Models
                     Platform = "YoutubeGaming",
                     Privacy = true
                 };
-                context.Add(test3);
+                context.Users.Add(test3);
                 Post p = new Post()
                 {
                     User = test2,
