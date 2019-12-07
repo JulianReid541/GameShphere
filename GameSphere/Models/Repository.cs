@@ -14,9 +14,8 @@ namespace GameSphere.Models
         {
             context = appDbContext;
         }
-
-        //public List<User> Users { get { return context.Users.Include("Posts").ToList(); } }       
-        public List<User> Users {  get { return context.Users.Include("Posts")                                                                                                                
+       
+        public List<User> Users {  get { return context.Users.Include("Posts")
                                                              .ToList(); } }
 
         public List<Post> Posts {  get { return context.Posts

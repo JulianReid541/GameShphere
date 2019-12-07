@@ -45,18 +45,15 @@ namespace GameSphere.Controllers
         [HttpGet]       
         public ActionResult HomePage(User user)
         {
-            List<Post> posts = new List<Post>();
+            List<User> dbUsers = Repository.Users;
             List<Post> dbLists = Repository.Posts;
             User u = Repository.GetUserByUserName(user.UserName);
-            foreach (Post p in dbLists.Where(p => p.User.UserName == u.UserName))
-            {
-                posts.Add(p);
-            }
 
-            ViewBag.postCount = posts.Count;
+            ViewBag.userName = u.UserName;
+            ViewBag.postCount = u.Posts.Count;
             ViewBag.followingCount = u.Following.Count;
             ViewBag.followerCount = u.Followers.Count;
-            return View(u);
+            return View(dbLists);
         }
 
         //Takes postmessage and adds user to post saves it to post

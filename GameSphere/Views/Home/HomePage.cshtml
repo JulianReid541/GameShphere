@@ -1,4 +1,4 @@
-﻿@model GameSphere.Models.User
+﻿@model List<Post>
 @{
     ViewData["Title"] = "HomePage";
 }
@@ -7,9 +7,9 @@
 
 <div>
     <div class="container-fluid col-sm-4 float-left">
-       <div class="text-lg-center border-left border-right border-top border-bottom"> Username: <a asp-action="ProfilePage" asp-route-title="@Model.UserName">@Model.UserName</a><br /></div>
+       <div class="text-lg-center border-left border-right border-top border-bottom"> Username: <a asp-action="ProfilePage" asp-route-title="@ViewBag.userName">@ViewBag.userName</a><br /></div>
         <div class="border-left border-right border-top border-bottom" align="center">
-            <a class="text-sm-center" asp-action="Privacy" asp-route-title="@Model.UserName"> Privacy Settings?</a>
+            <a class="text-sm-center" asp-action="Privacy" asp-route-title="@ViewBag.userName"> Privacy Settings?</a>
         </div>
         <div class="border-left border-right border-top border-bottom">
             <table class="text-center table-bordered" align="center" width="100%">
@@ -19,9 +19,9 @@
                     <th>Followers</th>
                 </tr>               
                 <tr class="">
-                    <td><a asp-action="PostList" asp-route-title="@Model.UserName">@ViewBag.postCount</a></td>
-                    <td><a asp-action="FollowingList" asp-route-title="@Model.UserName">@ViewBag.followingCount</a></td>
-                    <td><a asp-action="FollowersList" asp-route-title="@Model.UserName">@ViewBag.followerCount</a></td>
+                    <td><a asp-action="PostList" asp-route-title="@ViewBag.userName">@ViewBag.postCount</a></td>
+                    <td><a asp-action="FollowingList" asp-route-title="@ViewBag.userName">@ViewBag.followingCount</a></td>
+                    <td><a asp-action="FollowersList" asp-route-title="@ViewBag.userName">@ViewBag.followerCount</a></td>
                 </tr>
             </table>                  
         </div>
@@ -40,11 +40,11 @@
     <div class="container-fluid text-center col-lg-8 float-right border-left border-right border-top border-bottom">
         <div class="border-bottom">
             <h1>Your Posts</h1>
-            @if (Model.Posts.Count > 0)
+            @if (ViewBag.postCount > 0)
             {
-                @foreach (var p in Model.Posts)
+                @foreach (var p in Model.Where(x => x.User.UserName == ViewBag.userName))
                 {
-                    <a asp-action="ProfilePage" asp-route-title="p.Posts[0].User.UserName"> @p.User.UserName</a><text>: </text> @p.Message
+                    <a asp-action="ProfilePage" asp-route-title="@p.User.UserName"> @p.User.UserName</a><text>: </text> @p.Message
 
                     <br />
                 }
@@ -57,30 +57,21 @@
             }
         </div>
         <div>
-            <h1>Followers Posts</h1>
-            @if (Model.Following.Count > 0)
+            <h1>Community Posts</h1>
+            @if (Model.Count > 0)
             {
-                @foreach (User u in Model.Following)
+                @foreach (Post u in Model)
                 {
-                    @if (u.Posts.Count > 0)
-                    {
-                        <a asp-action="ProfilePage" asp-route-title="@u.Posts[0].User.UserName"> @u.Posts[0].User.UserName</a><text>: </text> @u.Posts[0].Message
+                        <a asp-action="ProfilePage" asp-route-title="@u.User.UserName"> @u.User.UserName</a><text>: </text> @u.Message
 
-                        <br />
-                    }
-                    else
-                    {
-                        <div>
-                            Your followers haven't posted anything yet
-                        </div>
-                    }
+                        <br />                    
                 }
             }
 
-            @if (Model.Following.Count <= 0)
+            @if (Model.Count <= 0)
             {
                 <div>
-                    You are not following anyone yet
+                    The Community hasn't posted anything yet
                 </div>
             }
         </div>
