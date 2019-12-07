@@ -15,13 +15,9 @@
             <table class="text-center table-bordered" align="center" width="100%">
                 <tr>                
                     <th>Posts</th>
-                    <th>Following</th>
-                    <th>Followers</th>
                 </tr>               
                 <tr class="">
                     <td><a asp-action="PostList" asp-route-title="@ViewBag.userName">@ViewBag.postCount</a></td>
-                    <td><a asp-action="FollowingList" asp-route-title="@ViewBag.userName">@ViewBag.followingCount</a></td>
-                    <td><a asp-action="FollowersList" asp-route-title="@ViewBag.userName">@ViewBag.followerCount</a></td>
                 </tr>
             </table>                  
         </div>

@@ -12,8 +12,7 @@ namespace GameSphere.Controllers
 {  
     public class HomeController : Controller
     {       
-        //TODO use EF to make a database
-        
+        //TODO Cleaning Up
         IRepository Repository;
         public HomeController(IRepository r)
         {
@@ -115,42 +114,11 @@ namespace GameSphere.Controllers
         //List of posts from user
         public IActionResult PostList(string title)
         {
-            List<Post> userPosts = new List<Post>();
             List<Post> posts = Repository.Posts;
             User u = Repository.GetUserByUserName(title);
 
-            foreach (Post p in posts.Where(p => p.User.UserName == u.UserName))
-            {
-                userPosts.Add(p);
-            }
             ViewBag.user = u.UserName;
-            return View(userPosts);
-        }
-
-        //List of every person the signed in user is following
-        public IActionResult FollowingList(string title)
-        {
-            List<User> following = new List<User>();
-            User u = Repository.GetUserByUserName(title);
-            foreach (User f in u.Following)
-            {
-                following.Add(f);
-            }
-            ViewBag.user = u.UserName;
-            return View(following);
-        }
-
-        //List of followers the signed in user has
-        public IActionResult FollowersList(string title)
-        {
-            List<User> followers = new List<User>();
-            User u = Repository.GetUserByUserName(title);
-            foreach (User f in u.Followers)
-            {
-                followers.Add(f);
-            }
-            ViewBag.user = u.UserName;
-            return View(followers);
+            return View(u);
         }
 
         //Displays username and quiz results for selected user
@@ -172,58 +140,7 @@ namespace GameSphere.Controllers
 
             ViewBag.usercount = users.Count;
             return View(users);
-        }
-
-        //Unfollows selected user
-        public RedirectToActionResult Unfollow(string title)
-        {
-            User u = Repository.GetUserByUserName(title);
-            User u2 = Repository.GetUserByUserName(TempData["signedInUser"] as string);
-            TempData.Keep();
-            u2.RemoveFollow(u);
-            Repository.UpdateUser(u2);
-            u.RemovingFollower(u2);
-            Repository.UpdateUser(u);
-            return RedirectToAction("HomePage", u2);
-        }       
-
-        //Follows selected user
-        public RedirectToActionResult Follow(string title)
-        {
-            User u = Repository.GetUserByUserName(title);
-            User u2 = Repository.GetUserByUserName(TempData["signedInUser"] as string);
-            TempData.Keep();
-            if (u2.UserName == u.UserName)
-            {                
-                return RedirectToAction("FollowResult1");
-            }
-            if (u2.Following.Contains(u))
-            {               
-                return RedirectToAction("FollowResult2");
-            }
-            else
-            {
-                u2.AddFollowing(u);
-                Repository.UpdateUser(u2);
-                u.AddFollower(u2);
-                Repository.UpdateUser(u);
-            }               
-            return RedirectToAction("UserList");
-        }
-
-        //Result if User tries to follow himself
-        public IActionResult FollowResult1()
-        {
-            ViewBag.followResult = "You can't follow yourself";
-            return View();
-        }
-
-        //Result if user is already following someone 
-        public IActionResult FollowResult2()
-        {
-            ViewBag.followResult = "You already follow that person";
-            return View();
-        }
+        }    
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
