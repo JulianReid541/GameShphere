@@ -50,8 +50,6 @@ namespace GameSphere.Controllers
 
             ViewBag.userName = u.UserName;
             ViewBag.postCount = u.Posts.Count;
-            ViewBag.followingCount = u.Following.Count;
-            ViewBag.followerCount = u.Followers.Count;
             return View(dbLists);
         }
 

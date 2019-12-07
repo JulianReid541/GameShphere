@@ -3,7 +3,7 @@
     ViewData["Title"] = "PostList";
 }
 
-<h1>Posts</h1>
+<h1 class="text-center">Posts</h1>
 @if (Model.Posts.Count <= 0)
 {
     <div>
@@ -14,7 +14,7 @@
 {
     @foreach (Post p in Model.Posts)
     {
-        <div>
+        <div class="text-center">
             @ViewBag.user<text>: </text> @p.Message
         </div>
     }
