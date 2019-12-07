@@ -31,7 +31,7 @@ namespace GameSphere.Models
                     Genre = "Horror",
                     Platform = "YoutubeGaming",
                     Privacy = false
-                };
+                };                
                 context.Users.Add(test2);
                 User test3 = new User()
                 {
@@ -48,12 +48,14 @@ namespace GameSphere.Models
                     User = test2,
                     Message = "This new site is amazing"
                 };
+                test2.AddPost(p);
                 context.Posts.Add(p);
                 Post p2 = new Post()
                 {
                     User = test3,
                     Message = "This is WAY COOLER THAN FACEBOOK"
                 };
+                test3.AddPost(p2);
                 context.Posts.Add(p2);
 
                 context.SaveChanges();

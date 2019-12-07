@@ -37,7 +37,7 @@ namespace GameSphere
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             services.AddTransient<IRepository, Repository>();
-
+            
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(
                 Configuration["ConnectionStrings:MsSqlConnection"]));
         }
@@ -67,9 +67,9 @@ namespace GameSphere
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            //context.Database.Migrate();
+            context.Database.Migrate();
 
-            //SeedData.Seed(context);
+            SeedData.Seed(context);
         }
     }
 }
