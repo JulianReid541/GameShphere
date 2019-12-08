@@ -28,12 +28,11 @@ namespace GameSphere.Controllers
 
         //takes username as string and checks repository to see if user exists
         //if user is null it returns to sign in page
-        //Otherwise it saves user as Tempdata/SignedInUser and redirects to the homepage
+        //Otherwise it redirects to the homepage
         [HttpPost]
         public RedirectToActionResult Index(string u)
         {
-            User user = Repository.GetUserByUserName(u);
-            TempData["signedInUser"] = u as string;
+            User user = Repository.GetUserByUserName(u);         
             if (user == null)
                 return RedirectToAction("Index");
             else
@@ -55,10 +54,9 @@ namespace GameSphere.Controllers
 
         //Takes postmessage and adds user to post saves it to post
         [HttpPost]
-        public RedirectToActionResult HomePage(string postMessage)
+        public RedirectToActionResult HomePage(string postMessage, string postUser)
         {
-            User u = Repository.GetUserByUserName(TempData["signedInUser"] as string);
-            TempData.Keep();
+            User u = Repository.GetUserByUserName(postUser);
             Post p = new Post()
             {
                 User = u,
