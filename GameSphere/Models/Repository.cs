@@ -35,8 +35,8 @@ namespace GameSphere.Models
 
         public void AddPost(Post p , User u)
         {
+            context.Posts.Add(p);
             u.AddPost(p);
-            context.Posts.Add(p);           
             context.Users.Update(u);
             context.SaveChanges();
         }
