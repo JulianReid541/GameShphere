@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using GameSphere.Models;
 using System.Web;
 using System.Data;
+using Microsoft.AspNetCore.Identity;
 
 namespace GameSphere.Controllers
 {  
@@ -29,16 +30,17 @@ namespace GameSphere.Controllers
         //takes username as string and checks repository to see if user exists
         //if user is null it returns to sign in page
         //Otherwise it redirects to the homepage
+        /*
         [HttpPost]
-        public RedirectToActionResult Index(string u)
+        public async Task<RedirectToActionResult> Index(string u)
         {
-            AppUser user = Repository.GetUserByUserName(u);         
+            AppUser user = await userManager.FindByIdAsync(id);
             if (user == null)
                 return RedirectToAction("Index");
             else
                 return RedirectToAction("HomePage", user);
         }
-
+        
         //Homepage taking user object and displays posts and counts for user posts/follows/following
         [HttpGet]       
         public ActionResult HomePage(AppUser user)
@@ -143,5 +145,6 @@ namespace GameSphere.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+        */
     }
 }

@@ -9,8 +9,6 @@ namespace GameSphere.Models
     {
         public int PostID { get; set; }       
         public string Message { get; set; }
-
-        public AppUser User { get; set; }
-        public int UserID { get; set; }
+        public AppUser User { get; set; }       
     }
 }

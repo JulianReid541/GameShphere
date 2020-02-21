@@ -15,12 +15,13 @@ namespace GameSphere.Models
             context = appDbContext;
         }
        
-        public List<AppUser> Users {  get { return context.Users.Include("Posts")
-                                                                .ToList(); } }
+        //public List<AppUser> Users {  get { return context.Users.Include("Posts")
+//                                                                .ToList(); } }
 
         public List<Post> Posts {  get { return context.Posts
                                                              .ToList(); } }
 
+        /*
         public void AddUser(AppUser user)
         {
             context.Users.Add(user);
@@ -41,11 +42,13 @@ namespace GameSphere.Models
             context.SaveChanges();
         }
 
+        
         public AppUser GetUserByUserName(string username)
         {
             AppUser user;
             user = context.Users.First(u => u.UserName == username);                       
             return user;
-        }       
+        }     
+        */
     }    
 }

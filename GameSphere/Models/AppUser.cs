@@ -1,15 +1,16 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace GameSphere.Models
 {
-    public class AppUser
+    public class AppUser : IdentityUser
     {
         private List<Post> posts = new List<Post>();
 
-        public string UserName { get; set; }
+        public string Name { get; set; }
         public string Game { get; set; }
         public string Console { get; set; }
         public string Genre { get; set; }

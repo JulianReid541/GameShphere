@@ -9,7 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Runtime.InteropServices;
 
-namespace georgecarlinwebsite
+namespace GameSphere
 {
     public class Startup
     {
