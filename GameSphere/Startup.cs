@@ -1,20 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using GameSphere.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using GameSphere.Models;
 using Microsoft.Extensions.Hosting;
-using Microsoft.AspNetCore.Identity;
+using System.Runtime.InteropServices;
 
-namespace GameSphere
+namespace georgecarlinwebsite
 {
     public class Startup
     {
@@ -87,6 +82,8 @@ namespace GameSphere
             context.Database.Migrate();
 
             SeedData.Seed(context);
+
+            //ApplicationDbContext.CreateAdminAccount(app.ApplicationServices, Configuration).Wait();
         }
     }
 }
