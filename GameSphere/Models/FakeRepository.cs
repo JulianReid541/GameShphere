@@ -8,23 +8,23 @@ namespace GameSphere.Models
 {
     public class FakeRepository : IRepository
     {
-        private List<User> users = new List<User>();
+        private List<AppUser> users = new List<AppUser>();
         private List<Post> posts = new List<Post>();
-        public List<User> Users { get { return users; } }
+        public List<AppUser> Users { get { return users; } }
         public List<Post> Posts { get { return Posts; } }
 
-        public void AddUser(User user)
+        public void AddUser(AppUser user)
         {
             users.Add(user);
         }
 
-        public void UpdateUser(User user) { }
+        public void UpdateUser(AppUser user) { }
 
-        public void AddPost(Post p, User U) { }
+        public void AddPost(Post p, AppUser U) { }
 
-        public User GetUserByUserName(string username)
+        public AppUser GetUserByUserName(string username)
         {
-            User user = users.Find(u => u.UserName == username);
+            AppUser user = users.Find(u => u.UserName == username);
             return user;
         }
     }

@@ -8,11 +8,11 @@ namespace GameSphere.Models
 {
     public interface IRepository
     {
-        List<User> Users { get; }
+        List<AppUser> Users { get; }
         List<Post> Posts { get; }
-        void AddUser(User user);
-        void UpdateUser(User user);
-        void AddPost(Post p, User u);
-        User GetUserByUserName(string username);
+        void AddUser(AppUser user);
+        void UpdateUser(AppUser user);
+        void AddPost(Post p, AppUser u);
+        AppUser GetUserByUserName(string username);
     }
 }

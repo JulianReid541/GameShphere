@@ -15,25 +15,25 @@ namespace GameSphere.Models
             context = appDbContext;
         }
        
-        public List<User> Users {  get { return context.Users.Include("Posts")
-                                                             .ToList(); } }
+        public List<AppUser> Users {  get { return context.Users.Include("Posts")
+                                                                .ToList(); } }
 
         public List<Post> Posts {  get { return context.Posts
                                                              .ToList(); } }
 
-        public void AddUser(User user)
+        public void AddUser(AppUser user)
         {
             context.Users.Add(user);
             context.SaveChanges();
         }
 
-        public void UpdateUser(User u)
+        public void UpdateUser(AppUser u)
         {
             context.Users.Update(u);
             context.SaveChanges();
         }
 
-        public void AddPost(Post p , User u)
+        public void AddPost(Post p , AppUser u)
         {
             context.Posts.Add(p);
             u.AddPost(p);
@@ -41,9 +41,9 @@ namespace GameSphere.Models
             context.SaveChanges();
         }
 
-        public User GetUserByUserName(string username)
+        public AppUser GetUserByUserName(string username)
         {
-            User user;
+            AppUser user;
             user = context.Users.First(u => u.UserName == username);                       
             return user;
         }       

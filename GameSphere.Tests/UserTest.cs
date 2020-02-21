@@ -1,8 +1,6 @@
-using System;
 using System.Collections.Generic;
 using GameSphere.Controllers;
 using GameSphere.Models;
-using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
 using Xunit;
 
@@ -65,49 +63,7 @@ namespace GameSphere.Tests
             //Assert
             Assert.Single(u.Posts);
             Assert.Equal("This is amazing", u.Posts[0].Message);
-        }
-
-        [Fact]
-        public void UnfollowTest()
-        {
-            //Arrange 
-            var repo = new FakeRepository();
-            AddTestData(repo);
-            var controller = new HomeController(repo);
-
-            //Act
-            User u = repo.GetUserByUserName("test");
-            User u2 = repo.GetUserByUserName("test3");
-
-            u.RemoveFollow(u2);
-            u2.RemovingFollower(u);
-
-            //Assert
-            Assert.DoesNotContain(u2, u.Following);
-            Assert.DoesNotContain(u, u2.Followers);
-        }
-
-        [Fact]
-        public void FollowTest()
-        {
-            //Arrange         
-            var repo = new FakeRepository();
-            AddTestData(repo);
-            var controller = new HomeController(repo);
-
-            //Act
-            User u = repo.GetUserByUserName("test4");
-            User u2 = repo.GetUserByUserName("test3");
-
-            u.AddFollowing(u2);
-            u2.AddFollower(u);
-
-            //Assert
-            Assert.Contains(u2, u.Following);
-            Assert.Contains(u, u2.Followers);
-            Assert.Single(u.Following);
-            Assert.Contains(u, u2.Followers);
-        }     
+        }  
 
         //TestData
         #region
@@ -161,12 +117,6 @@ namespace GameSphere.Tests
             };
             test2.AddPost(p);
             test3.AddPost(p2);
-            test1.AddFollowing(test2);
-            test1.AddFollowing(test3);
-            test1.AddFollower(test2);
-            test2.AddFollower(test1);
-            test2.AddFollowing(test1);
-            test3.AddFollower(test1);
             repo.AddUser(test4);
             repo.AddUser(test3);
             repo.AddUser(test2);

@@ -10,7 +10,7 @@ namespace GameSphere.Models
         public int PostID { get; set; }       
         public string Message { get; set; }
 
-        public User User { get; set; }
+        public AppUser User { get; set; }
         public int UserID { get; set; }
     }
 }

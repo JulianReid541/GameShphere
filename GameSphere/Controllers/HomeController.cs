@@ -32,7 +32,7 @@ namespace GameSphere.Controllers
         [HttpPost]
         public RedirectToActionResult Index(string u)
         {
-            User user = Repository.GetUserByUserName(u);         
+            AppUser user = Repository.GetUserByUserName(u);         
             if (user == null)
                 return RedirectToAction("Index");
             else
@@ -41,11 +41,11 @@ namespace GameSphere.Controllers
 
         //Homepage taking user object and displays posts and counts for user posts/follows/following
         [HttpGet]       
-        public ActionResult HomePage(User user)
+        public ActionResult HomePage(AppUser user)
         {
-            List<User> dbUsers = Repository.Users;
+            List<AppUser> dbUsers = Repository.Users;
             List<Post> dbLists = Repository.Posts;
-            User u = Repository.GetUserByUserName(user.UserName);
+            AppUser u = Repository.GetUserByUserName(user.UserName);
 
             ViewBag.userName = u.UserName;
             ViewBag.postCount = u.Posts.Count;
@@ -56,7 +56,7 @@ namespace GameSphere.Controllers
         [HttpPost]
         public RedirectToActionResult HomePage(string postMessage, string postUser)
         {
-            User u = Repository.GetUserByUserName(postUser);
+            AppUser u = Repository.GetUserByUserName(postUser);
             Post p = new Post()
             {
                 User = u,
@@ -79,7 +79,7 @@ namespace GameSphere.Controllers
         public RedirectToActionResult SignUp(string username, string game, string console,
                                              string genre, string platform, bool privacy)
         {
-            User user = new User();
+            AppUser user = new AppUser();
             user.UserName = username;
             user.Game = game;
             user.Console = console;
@@ -101,7 +101,7 @@ namespace GameSphere.Controllers
         [HttpPost]
         public RedirectToActionResult Privacy(string title, bool privacy)
         {
-            User user = Repository.GetUserByUserName(title);
+            AppUser user = Repository.GetUserByUserName(title);
             user.ChangeUserPrivacy(privacy);
             Repository.UpdateUser(user);
             return RedirectToAction("Homepage", user);
@@ -111,7 +111,7 @@ namespace GameSphere.Controllers
         public IActionResult PostList(string title)
         {
             List<Post> posts = Repository.Posts;
-            User u = Repository.GetUserByUserName(title);
+            AppUser u = Repository.GetUserByUserName(title);
 
             ViewBag.user = u.UserName;
             return View(u);
@@ -120,16 +120,16 @@ namespace GameSphere.Controllers
         //Displays username and quiz results for selected user
         public IActionResult ProfilePage(string title)
         {
-            User u = Repository.GetUserByUserName(title);
+            AppUser u = Repository.GetUserByUserName(title);
             return View(u);
         }
 
         //List of all users on the site
         public IActionResult UserList()
         {
-            List<User> users = new List<User>();
-            List<User> dbUsers = Repository.Users;
-            foreach (User u in dbUsers)
+            List<AppUser> users = new List<AppUser>();
+            List<AppUser> dbUsers = Repository.Users;
+            foreach (AppUser u in dbUsers)
             {
                 users.Add(u);
             }

@@ -13,7 +13,7 @@ namespace GameSphere.Models
         {
             if (!context.Users.Any())
             {
-                User test1 = new User()
+                AppUser test1 = new AppUser()
                 {
                     UserName = "test",
                     Game = "Call of Duty",
@@ -23,7 +23,7 @@ namespace GameSphere.Models
                     Privacy = true
                 };
                 context.Users.Add(test1);
-                User test2 = new User()
+                AppUser test2 = new AppUser()
                 {
                     UserName = "test2",
                     Game = "Halo 4",
@@ -33,7 +33,7 @@ namespace GameSphere.Models
                     Privacy = false
                 };                
                 context.Users.Add(test2);
-                User test3 = new User()
+                AppUser test3 = new AppUser()
                 {
                     UserName = "test3",
                     Game = "Halo 5",
