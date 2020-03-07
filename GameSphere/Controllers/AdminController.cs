@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace GameSphere.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Admins")]
     public class AdminController : Controller
     {
         private UserManager<AppUser> userManager;
@@ -37,7 +37,12 @@ namespace GameSphere.Controllers
                 AppUser user = new AppUser
                 {
                     UserName = model.Name,
-                    Email = model.Email
+                    Email = model.Email,
+                    Game = model.Game,
+                    Console = model.Console,
+                    Genre = model.Genre,
+                    Platform = model.Platform,
+                    Privacy = model.Privacy
                 };
                 IdentityResult result
                     = await userManager.CreateAsync(user, model.Password);

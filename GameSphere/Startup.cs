@@ -86,6 +86,8 @@ namespace GameSphere
 
             context.Database.Migrate();
 
+            ApplicationDbContext.CreateAdminAccount(app.ApplicationServices, Configuration).Wait();
+
             //SeedData.Seed(context);
         }
     }
