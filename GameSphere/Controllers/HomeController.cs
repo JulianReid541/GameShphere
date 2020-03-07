@@ -25,7 +25,7 @@ namespace GameSphere.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            return View();
+            return View("HomePage");
         }
 
         //    //takes username as string and checks repository to see if user exists

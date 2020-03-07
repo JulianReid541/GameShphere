@@ -37,12 +37,7 @@ namespace GameSphere.Controllers
                 AppUser user = new AppUser
                 {
                     UserName = model.Name,
-                    Email = model.Email,
-                    Game = model.Game,
-                    Console = model.Console,
-                    Genre = model.Genre,
-                    Platform = model.Platform,
-                    Privacy = model.Privacy
+                    Email = model.Email
                 };
                 IdentityResult result
                     = await userManager.CreateAsync(user, model.Password);
