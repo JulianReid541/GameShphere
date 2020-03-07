@@ -7,3 +7,11 @@
 ​	project now uses authorization and authentication
 
 ​	Identity implemented as well
+
+<u>RefactoringForIdentity</u>
+
+Users can login 
+
+Admin can now Add/Edit/DeleteUsers
+
+A new look for the home page
