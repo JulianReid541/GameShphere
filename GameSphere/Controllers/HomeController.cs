@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc;
 using GameSphere.Models;
 using System.Web;
 using System.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GameSphere.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         //TODO Cleaning Up

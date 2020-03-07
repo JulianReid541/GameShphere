@@ -2,9 +2,11 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using GameSphere.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GameSphere.Controllers
 {
+    [Authorize]
     public class AdminController : Controller
     {
         private UserManager<AppUser> userManager;
