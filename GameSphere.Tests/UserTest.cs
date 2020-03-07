@@ -54,7 +54,7 @@ namespace GameSphere.Tests
             var controller = new HomeController(repo);
 
             //Act
-            User u = repo.GetUserByUserName("test");
+            AppUser u = repo.GetUserByUserName("test");
             Post p = new Post()
             {
                 User = u,

@@ -86,7 +86,7 @@ namespace GameSphere
 
             context.Database.Migrate();
 
-            SeedData.Seed(context);
+            //SeedData.Seed(context);
         }
     }
 }

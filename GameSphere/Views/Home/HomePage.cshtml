@@ -40,9 +40,9 @@
             <h1>Your Posts</h1>
             @if (ViewBag.postCount > 0)
             {
-                @foreach (var p in Model.Where(x => x.User.UserName == ViewBag.userName))
+                @foreach (var p in Model.Where(x => x.UserName == ViewBag.userName))
                 {
-                    <a asp-action="ProfilePage" asp-route-title="@p.User.UserName"> @p.User.UserName</a><text>: </text> @p.Message
+                    <a asp-action="ProfilePage" asp-route-title="@p.UserName"> @p.UserName</a><text>: </text> @p.Message
 
                     <br />
                 }
@@ -60,7 +60,7 @@
             {
                 @foreach (Post u in Model)
                 {
-                        <a asp-action="ProfilePage" asp-route-title="@u.User.UserName"> @u.User.UserName</a><text>: </text> @u.Message
+                        <a asp-action="ProfilePage" asp-route-title="@u.UserName"> @u.UserName</a><text>: </text> @u.Message
 
                         <br />                    
                 }
