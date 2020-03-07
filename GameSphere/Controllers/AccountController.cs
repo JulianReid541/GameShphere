@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GameSphere.Controllers
 {
+    //TODO: Allow users to sign up via identity
     public class AccountController : Controller
     {
         private UserManager<AppUser> userManager;

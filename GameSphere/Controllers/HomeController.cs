@@ -14,7 +14,7 @@ namespace GameSphere.Controllers
     [Authorize]
     public class HomeController : Controller
     {
-        //TODO Cleaning Up
+        //TODO Cleaning Up/Make work with identity
         IRepository Repository;
         public HomeController(IRepository r)
         {
