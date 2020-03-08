@@ -8,6 +8,7 @@ using GameSphere.Models;
 using System.Web;
 using System.Data;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace GameSphere.Controllers
 {
@@ -16,135 +17,126 @@ namespace GameSphere.Controllers
     {
         //TODO Cleaning Up/Make work with identity
         IRepository Repository;
-        public HomeController(IRepository r)
+        private UserManager<AppUser> userManager;
+
+        private Task<AppUser> CurrentUser =>
+            userManager.FindByNameAsync(HttpContext.User.Identity.Name);
+
+        public HomeController(IRepository r, UserManager<AppUser> userMgr)
         {
             Repository = r;
+            userManager = userMgr;
         }
 
-        //Sign in PAGE
+        //Homepage taking user object and displays posts and counts for user posts/follows/following
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View("HomePage");
+            List<AppUser> dbUsers = userManager.Users.ToList();
+            List<Post> dbLists = Repository.Posts;
+            AppUser u = await CurrentUser;
+
+            ViewBag.userName = u.UserName;
+            ViewBag.postCount = u.Posts.Count;
+            return View(dbLists);
         }
 
-        //    //takes username as string and checks repository to see if user exists
-        //    //if user is null it returns to sign in page
-        //    //Otherwise it redirects to the homepage
-        //    [HttpPost]
-        //    public RedirectToActionResult Index(string u)
-        //    {
-        //        User user = Repository.GetUserByUserName(u);         
-        //        if (user == null)
-        //            return RedirectToAction("Index");
-        //        else
-        //            return RedirectToAction("HomePage", user);
-        //    }
+        //Takes postmessage and adds user to post saves it to post
+        [HttpPost]
+        public async Task<IActionResult> Index(string postMessage)
+        {
+            AppUser u = await CurrentUser;
+            Post p = new Post()
+            {
+                UserName = u,
+                Message = postMessage
+            };
+            u.AddPost(p);
+            Repository.AddPost(p, u);
+            await userManager.UpdateAsync(u);
+            List<Post> dbLists = Repository.Posts;
+            ViewBag.userName = u.UserName;
+            ViewBag.postCount = u.Posts.Count;
+            return View(dbLists);
+        }
 
-        //    //Homepage taking user object and displays posts and counts for user posts/follows/following
-        //    [HttpGet]       
-        //    public ActionResult HomePage(AppUser user)
-        //    {
-        //        List<User> dbUsers = Repository.Users;
-        //        List<Post> dbLists = Repository.Posts;
-        //        User u = Repository.GetUserByUserName(user.UserName);
+            //    //Returns signup page
+            //    [HttpGet]
+            //    public IActionResult SignUp()
+            //    {          
+            //        return View();
+            //    }
 
-        //        ViewBag.userName = u.UserName;
-        //        ViewBag.postCount = u.Posts.Count;
-        //        return View(dbLists);
-        //    }
+            //    //Takes username and quiz answers. Creates a new user
+            //    [HttpPost]
+            //    public RedirectToActionResult SignUp(string username, string game, string console,
+            //                                         string genre, string platform, bool privacy)
+            //    {
+            //        User user = new User();
+            //        user.UserName = username;
+            //        user.Game = game;
+            //        user.Console = console;
+            //        user.Genre = genre;
+            //        user.Platform = platform;
+            //        user.Privacy = privacy;
+            //        Repository.AddUser(user);
+            //        return RedirectToAction("Index");
+            //    }
 
-        //    //Takes postmessage and adds user to post saves it to post
-        //    [HttpPost]
-        //    public RedirectToActionResult HomePage(string postMessage, string postUser)
-        //    {
-        //        User u = Repository.GetUserByUserName(postUser);
-        //        Post p = new Post()
-        //        {
-        //            User = u,
-        //            Message = postMessage
-        //        };
+            //    //Privacy view. Allows user to change quiz result privacy T/F
+            //    [HttpGet]
+            //    public IActionResult Privacy(string title)
+            //    {         
+            //        return View("Privacy", title);
+            //    }
 
-        //        Repository.AddPost(p, u);
-        //        return RedirectToAction("HomePage", u);
-        //    }
+            //    //Changes user Privacy and redirects to homepage when done
+            //    [HttpPost]
+            //    public RedirectToActionResult Privacy(string title, bool privacy)
+            //    {
+            //        User user = Repository.GetUserByUserName(title);
+            //        user.ChangeUserPrivacy(privacy);
+            //        Repository.UpdateUser(user);
+            //        return RedirectToAction("Homepage", user);
+            //    }
 
-        //    //Returns signup page
-        //    [HttpGet]
-        //    public IActionResult SignUp()
-        //    {          
-        //        return View();
-        //    }
+            //    //List of posts from user
+            //    public IActionResult PostList(string title)
+            //    {
+            //        List<Post> posts = Repository.Posts;
+            //        User u = Repository.GetUserByUserName(title);
 
-        //    //Takes username and quiz answers. Creates a new user
-        //    [HttpPost]
-        //    public RedirectToActionResult SignUp(string username, string game, string console,
-        //                                         string genre, string platform, bool privacy)
-        //    {
-        //        User user = new User();
-        //        user.UserName = username;
-        //        user.Game = game;
-        //        user.Console = console;
-        //        user.Genre = genre;
-        //        user.Platform = platform;
-        //        user.Privacy = privacy;
-        //        Repository.AddUser(user);
-        //        return RedirectToAction("Index");
-        //    }
+            //        ViewBag.user = u.UserName;
+            //        return View(u);
+            //    }
 
-        //    //Privacy view. Allows user to change quiz result privacy T/F
-        //    [HttpGet]
-        //    public IActionResult Privacy(string title)
-        //    {         
-        //        return View("Privacy", title);
-        //    }
+            //    //Displays username and quiz results for selected user
+            //    public IActionResult ProfilePage(string title)
+            //    {
+            //        User u = Repository.GetUserByUserName(title);
+            //        return View(u);
+            //    }
 
-        //    //Changes user Privacy and redirects to homepage when done
-        //    [HttpPost]
-        //    public RedirectToActionResult Privacy(string title, bool privacy)
-        //    {
-        //        User user = Repository.GetUserByUserName(title);
-        //        user.ChangeUserPrivacy(privacy);
-        //        Repository.UpdateUser(user);
-        //        return RedirectToAction("Homepage", user);
-        //    }
+            //    //List of all users on the site
+            //    public IActionResult UserList()
+            //    {
+            //        List<User> users = new List<User>();
+            //        List<User> dbUsers = Repository.Users;
+            //        foreach (User u in dbUsers)
+            //        {
+            //            users.Add(u);
+            //        }
 
-        //    //List of posts from user
-        //    public IActionResult PostList(string title)
-        //    {
-        //        List<Post> posts = Repository.Posts;
-        //        User u = Repository.GetUserByUserName(title);
+            //        ViewBag.usercount = users.Count;
+            //        return View(users);
+            //    }    
 
-        //        ViewBag.user = u.UserName;
-        //        return View(u);
-        //    }
-
-        //    //Displays username and quiz results for selected user
-        //    public IActionResult ProfilePage(string title)
-        //    {
-        //        User u = Repository.GetUserByUserName(title);
-        //        return View(u);
-        //    }
-
-        //    //List of all users on the site
-        //    public IActionResult UserList()
-        //    {
-        //        List<User> users = new List<User>();
-        //        List<User> dbUsers = Repository.Users;
-        //        foreach (User u in dbUsers)
-        //        {
-        //            users.Add(u);
-        //        }
-
-        //        ViewBag.usercount = users.Count;
-        //        return View(users);
-        //    }    
-
-        //    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        //    public IActionResult Error()
-        //    {
-        //        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        //    }
-        //}
+            //    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+            //    public IActionResult Error()
+            //    {
+            //        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            //    }
+            //}
     }
+    
 }

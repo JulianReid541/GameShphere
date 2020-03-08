@@ -15,19 +15,19 @@ namespace GameSphere.Controllers
         private UserManager<AppUser> userManager;
         private SignInManager<AppUser> signInManager;
 
+        public AccountController(UserManager<AppUser> userMgr,
+        SignInManager<AppUser> signinMgr)
+        {
+            userManager = userMgr;
+            signInManager = signinMgr;
+        }
+
         [AllowAnonymous]
         [HttpGet]
         public IActionResult Login(string returnUrl)
         {
             ViewBag.returnUrl = returnUrl;
             return View();
-        }
-
-        public AccountController(UserManager<AppUser> userMgr,
-                SignInManager<AppUser> signinMgr)
-        {
-            userManager = userMgr;
-            signInManager = signinMgr;
         }
 
         [HttpPost]

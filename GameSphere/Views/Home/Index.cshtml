@@ -1,26 +1,58 @@
-﻿@{
-    Layout = "_IndexLayout";
-    ViewData["Title"] = "Sign In";
+﻿@model List<Post>
+@{
+    ViewData["Title"] = "HomePage";
 }
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>@ViewData["Title"] - GameSphere</title>
-        <link rel="stylesheet" href="~/css/signin.css" />
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    </head>
-    <body class="text-center">
-        <form class="form-signin" method="post">
-            <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-            <label for="u" class="sr-only">Username</label>
-            <input class="form-control" placeholder="Username" name="u" /><br />
-            <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button><br />
-            <div class="mb-1">
-                <a class="text-muted" asp-action="SignUp">Don't have an account? Sign Up</a>
-            </div>
-            <p class="mt-5 mb-3 text-muted">&copy; 2019-2020</p>
-        </form>
-    </body>
-</html>
+
+<h1 class="text-center">Homepage</h1>
+
+<div>
+    <div class="container-fluid col-sm-4 float-left">
+       <div class="text-lg-center border-left border-right border-top border-bottom"> Username: <a asp-action="ProfilePage" asp-route-title="@ViewBag.userName">@ViewBag.userName</a><br /></div>
+        <div class="border-left border-right border-top border-bottom" align="center">
+            <a class="text-sm-center" asp-action="Privacy" asp-route-title="@ViewBag.userName"> Privacy Settings?</a>
+        </div>
+        <div class="border-left border-right border-top border-bottom">
+            <table class="text-center table-bordered" align="center" width="100%">
+                <tr>                
+                    <th>Posts</th>
+                </tr>               
+                <tr class="">
+                    <td><a asp-action="PostList" asp-route-title="@ViewBag.userName">@ViewBag.postCount</a></td>
+                </tr>
+            </table>                  
+        </div>
+        <br />
+        <div class="text-center border-bottom border-left border-right">
+            <form method="post">
+                <div class="form-group">
+                    <label for="postMessage" class="form-control-sm">Make a Post!</label>
+                    <input class="form-control-sm" name="postMessage" />
+                </div>
+                <button type="submit" value="Post!">Post!</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="container-fluid text-center col-lg-8 float-right border-left border-right border-top border-bottom">
+        <div>
+            <h1>Community Posts</h1>
+            @if (Model.Count > 0)
+            {
+                @foreach (Post u in Model)
+                {
+                        <a asp-action="ProfilePage" asp-route-title="@u.UserName"> @u.UserName</a><text>: </text> @u.Message
+
+                        <br />                    
+                }
+            }
+
+            @if (Model.Count <= 0)
+            {
+                <div>
+                    The Community hasn't posted anything yet
+                </div>
+            }
+        </div>
+    </div>
+    
+</div>
