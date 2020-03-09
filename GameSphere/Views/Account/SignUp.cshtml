@@ -1,0 +1,49 @@
+﻿@model RegisterUserViewModel
+@{
+    ViewData["Title"] = "SignUp";
+}
+
+<h1>SignUp</h1>
+
+<div>
+    <form method="post">
+        <div class="form-group">
+            <label class="form-control-sm" asp-for="Name">Username</label>
+            <input class="form-control-sm" asp-for="Name" />
+            <label class="form-control-sm" asp-for="Email">Email</label>
+            <input class="form-control-sm" asp-for="Email" />
+            <label class="form-control-sm" asp-for="Password">Password</label>
+            <input class="form-control-sm" asp-for="Password" />
+        </div>
+        <div class="form-group">
+            <label class="form-control-sm" asp-for="Game">Favorite Game:</label>
+            <input class="form-control-sm" asp-for="Game" /><br />
+            <label class="form-control-sm" asp-for="Console">Favorite Console:</label>
+            <input type="radio" asp-for="Console" value="playstation" /> Playstation
+            <input type="radio" asp-for="Console" value="xbox" checked /> Xbox
+            <input type="radio" asp-for="Console" value="pc" /> PC
+        </div>
+        <div>
+            <label class="form-control-sm" asp-for="Genre">Favorite Genre:</label>
+            <select asp-for="Genre">
+                <option value="horror">Horror</option>
+                <option value="fps">FPS</option>
+                <option value="singleplayer">Singleplayer</option>
+            </select>
+        </div>
+        <div>
+            <label class="form-control-sm" asp-for="Platform">Favorite Streaming Platform:</label>
+            <select asp-for="Platform">
+                <option value="twitch">Twitch</option>
+                <option value="youtube">YoutubeGaming</option>
+                <option value="mixer">Mixer</option>
+            </select>
+        </div>
+        <div>
+            <label class="form-control-sm" asp-for="Privacy">Do you want your answers to be public?</label>
+            <input type="radio" asp-for="Privacy" value="true" /> Yes
+            <input type="radio" asp-for="Privacy" value="false" /> No
+        </div>
+        <input type="submit" class="btn btn-primary" value="Enter" />
+    </form>
+</div>

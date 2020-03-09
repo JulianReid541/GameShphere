@@ -15,7 +15,6 @@ namespace GameSphere.Controllers
     [Authorize]
     public class HomeController : Controller
     {
-        //TODO Cleaning Up/Make work with identity
         IRepository Repository;
         private UserManager<AppUser> userManager;
 
@@ -59,29 +58,6 @@ namespace GameSphere.Controllers
             ViewBag.postCount = u.Posts.Count;
             return View(dbLists);
         }
-
-        //    //Returns signup page
-        //    [HttpGet]
-        //    public IActionResult SignUp()
-        //    {          
-        //        return View();
-        //    }
-
-        //    //Takes username and quiz answers. Creates a new user
-        //    [HttpPost]
-        //    public RedirectToActionResult SignUp(string username, string game, string console,
-        //                                         string genre, string platform, bool privacy)
-        //    {
-        //        User user = new User();
-        //        user.UserName = username;
-        //        user.Game = game;
-        //        user.Console = console;
-        //        user.Genre = genre;
-        //        user.Platform = platform;
-        //        user.Privacy = privacy;
-        //        Repository.AddUser(user);
-        //        return RedirectToAction("Index");
-        //    }
 
         //Privacy view. Allows user to change quiz result privacy T/F
         [HttpGet]
