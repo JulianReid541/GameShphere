@@ -53,6 +53,7 @@ namespace GameSphere.Controllers
             u.AddPost(p);
             Repository.AddPost(p, u);
             await userManager.UpdateAsync(u);
+            List<AppUser> dbUsers = userManager.Users.ToList();
             List<Post> dbLists = Repository.Posts;
             ViewBag.userName = u.UserName;
             ViewBag.postCount = u.Posts.Count;
@@ -89,7 +90,7 @@ namespace GameSphere.Controllers
         //Displays username and quiz results for selected user
         public async Task<IActionResult> ProfilePage(string title)
         {
-            AppUser u = await CurrentUser;
+            AppUser u = await userManager.FindByNameAsync(title);
             return View(u);
         }
 

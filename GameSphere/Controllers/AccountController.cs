@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GameSphere.Controllers
 {
-    //TODO: Allow users to sign up via identity
+    //TODO: Fix Logout
     public class AccountController : Controller
     {
         private RoleManager<IdentityRole> roleManager;
@@ -105,12 +105,11 @@ namespace GameSphere.Controllers
         }
 
         [HttpPost]
-
         [Authorize]
         public async Task<IActionResult> Logout()
         {
             await signInManager.SignOutAsync();
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("index", "Home");
         }
     }
 }
