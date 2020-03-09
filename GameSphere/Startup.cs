@@ -49,7 +49,8 @@ namespace GameSphere
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(
                 Configuration["ConnectionStrings:MsSqlConnection"]));
 
-            services.AddIdentity<AppUser, IdentityRole>()
+            services.AddIdentity<AppUser, IdentityRole>(opts => { 
+                opts.User.RequireUniqueEmail = true; })
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
         }
