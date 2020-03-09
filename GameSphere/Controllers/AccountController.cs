@@ -104,7 +104,7 @@ namespace GameSphere.Controllers
             return View(model);
         }
 
-        [HttpPost]
+        [HttpGet]
         [Authorize]
         public async Task<IActionResult> Logout()
         {
