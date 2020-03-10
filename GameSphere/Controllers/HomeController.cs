@@ -80,6 +80,7 @@ namespace GameSphere.Controllers
         //List of posts from user
         public async Task<IActionResult> PostList(string title)
         {
+            List<AppUser> dbUsers = userManager.Users.ToList();
             List<Post> posts = Repository.Posts;
             AppUser u = await userManager.FindByNameAsync(title);
 
@@ -113,6 +114,8 @@ namespace GameSphere.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        public IActionResult HomePage2() => View();
     }
     
 }

@@ -91,7 +91,7 @@ namespace GameSphere.Controllers
 
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("Index");
+                    return RedirectToAction("index", "Home");
                 }
                 else
                 {
