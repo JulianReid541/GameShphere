@@ -1,49 +1,61 @@
 ﻿@model RegisterUserViewModel
 @{
+    Layout = null;
     ViewData["Title"] = "SignUp";
 }
 
-<h1>SignUp</h1>
+    <html>
+    <head>
+        <title>@ViewData["Title"]</title>
+        <link rel="stylesheet" href="~/css/signup.css" />
 
-<div>
-    <form method="post">
-        <div class="form-group">
-            <label class="form-control-sm" asp-for="Name">Username</label>
-            <input class="form-control-sm" asp-for="Name" />
-            <label class="form-control-sm" asp-for="Email">Email</label>
-            <input class="form-control-sm" asp-for="Email" />
-            <label class="form-control-sm" asp-for="Password">Password</label>
-            <input class="form-control-sm" asp-for="Password" />
+        <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    </head>
+    <body>
+        <div class="page-container">
+            <h1>SignUp</h1>
+            <form method="post">
+                <div>
+                    <label class="form-control-sm" asp-for="Name">Username</label>
+                    <input class="form-control-sm" asp-for="Name" />
+                    <label class="form-control-sm" asp-for="Email">Email</label>
+                    <input class="form-control-sm" asp-for="Email" />
+                    <label class="form-control-sm" asp-for="Password">Password</label>
+                    <input class="form-control-sm" asp-for="Password" />
+                </div>
+                <div>
+                    <label class="form-control-sm" asp-for="Game">Favorite Game:</label>
+                    <input class="form-control-sm" asp-for="Game" /><br />
+                    <label class="form-control-sm" asp-for="Console">Favorite Console:</label>
+                    <input type="radio" asp-for="Console" value="playstation" /> Playstation
+                    <input type="radio" asp-for="Console" value="xbox" checked /> Xbox
+                    <input type="radio" asp-for="Console" value="pc" /> PC
+                </div>
+                <div>
+                    <label class="form-control-sm" asp-for="Genre">Favorite Genre:</label>
+                    <select asp-for="Genre">
+                        <option value="horror">Horror</option>
+                        <option value="fps">FPS</option>
+                        <option value="singleplayer">Singleplayer</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="form-control-sm" asp-for="Platform">Favorite Streaming Platform:</label>
+                    <select asp-for="Platform">
+                        <option value="twitch">Twitch</option>
+                        <option value="youtube">YoutubeGaming</option>
+                        <option value="mixer">Mixer</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="form-control-sm" asp-for="Privacy">Do you want your answers to be public?</label>
+                    <input type="radio" asp-for="Privacy" value="true" /> Yes
+                    <input type="radio" asp-for="Privacy" value="false" /> No
+                </div>
+                <input type="submit" class="btn btn-primary" value="Enter" />
+            </form>
         </div>
-        <div class="form-group">
-            <label class="form-control-sm" asp-for="Game">Favorite Game:</label>
-            <input class="form-control-sm" asp-for="Game" /><br />
-            <label class="form-control-sm" asp-for="Console">Favorite Console:</label>
-            <input type="radio" asp-for="Console" value="playstation" /> Playstation
-            <input type="radio" asp-for="Console" value="xbox" checked /> Xbox
-            <input type="radio" asp-for="Console" value="pc" /> PC
-        </div>
-        <div>
-            <label class="form-control-sm" asp-for="Genre">Favorite Genre:</label>
-            <select asp-for="Genre">
-                <option value="horror">Horror</option>
-                <option value="fps">FPS</option>
-                <option value="singleplayer">Singleplayer</option>
-            </select>
-        </div>
-        <div>
-            <label class="form-control-sm" asp-for="Platform">Favorite Streaming Platform:</label>
-            <select asp-for="Platform">
-                <option value="twitch">Twitch</option>
-                <option value="youtube">YoutubeGaming</option>
-                <option value="mixer">Mixer</option>
-            </select>
-        </div>
-        <div>
-            <label class="form-control-sm" asp-for="Privacy">Do you want your answers to be public?</label>
-            <input type="radio" asp-for="Privacy" value="true" /> Yes
-            <input type="radio" asp-for="Privacy" value="false" /> No
-        </div>
-        <input type="submit" class="btn btn-primary" value="Enter" />
-    </form>
-</div>
+    </body>
+    </html>
