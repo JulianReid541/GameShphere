@@ -1,18 +1,27 @@
 ﻿@model GameSphere.Models.AppUser
 
-<h1 class="text-center">Posts</h1>
-@if (Model.Posts.Count <= 0)
-{
-    <div>
-        They haven't posted anything yet
-    </div>
-}
-@if (Model.Posts.Count > 0)
-{
-    @foreach (Post p in Model.Posts)
+<h1 class="text-center">Posts by @Model.UserName</h1>
+<div class="text-center row">
+    @if (Model.Posts.Count <= 0)
     {
-        <div class="text-center">
-            @ViewBag.user<text>: </text> @p.Message
+        <div>
+            They haven't posted anything yet
         </div>
     }
-}
+    @if (Model.Posts.Count > 0)
+    {
+        @foreach (Post p in Model.Posts)
+        {
+            <div class="col-md-6">
+                <div class="card text-center">
+                    <div class="card-header">Username: @p.UserName</div>
+                    <div class="card-body">
+                        @p.Message
+                    </div>
+                    <div class="card-footer">
+                    </div>
+                </div>
+            </div>
+        }
+    }
+</div>

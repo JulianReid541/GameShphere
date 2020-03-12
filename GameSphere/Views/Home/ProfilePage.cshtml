@@ -3,20 +3,21 @@
     ViewData["Title"] = "ProfilePage";
 }
 
-<h1>Profile Page for @Model.UserName</h1>
-<div>
+<div class="text-center">
+    <h1>Profile Page for @Model.UserName</h1>
+
     @if (Model.Privacy == true)
     {
         <div>
             Game: @Model.Game <br />
-            Console: @Model.Console <br />         
+            Console: @Model.Console <br />
             Genre: @Model.Genre <br />
             Platform: @Model.Platform <br />
         </div>
     }
     else
     {
-        <div>
+        <div class="text-center">
             This user has chosen not to show their quiz answers
         </div>
     }
