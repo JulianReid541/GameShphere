@@ -15,3 +15,13 @@ Users can login
 Admin can now Add/Edit/DeleteUsers
 
 A new look for the home page
+
+**WEBSITE IS LIVE** 
+
+https://gamespherewebsite.azurewebsites.net/
+
+ADMIN ACC IS 
+
+admin@example.com
+
+password: Secret-1
