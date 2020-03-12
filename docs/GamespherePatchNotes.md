@@ -16,6 +16,8 @@ Admin can now Add/Edit/DeleteUsers
 
 A new look for the home page
 
+USER CAN NOW LOGOUT
+
 **WEBSITE IS LIVE** 
 
 https://gamespherewebsite.azurewebsites.net/
