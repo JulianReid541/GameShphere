@@ -33,6 +33,7 @@ namespace GameSphere.Controllers
         {
             List<AppUser> dbUsers = userManager.Users.ToList();
             List<Post> dbLists = Repository.Posts;
+            dbLists.Reverse();
             AppUser u = await CurrentUser;
 
             ViewBag.userName = u.UserName;
@@ -45,19 +46,25 @@ namespace GameSphere.Controllers
         public async Task<IActionResult> Index(string postMessage)
         {
             AppUser u = await CurrentUser;
-            Post p = new Post()
+            if (postMessage != null)
             {
-                UserName = u,
-                Message = postMessage
-            };
-            u.AddPost(p);
-            Repository.AddPost(p, u);
-            await userManager.UpdateAsync(u);
+                
+                Post p = new Post()
+                {
+                    UserName = u,
+                    Message = postMessage
+                };
+                u.AddPost(p);
+                Repository.AddPost(p, u);
+                await userManager.UpdateAsync(u);
+            }          
             List<AppUser> dbUsers = userManager.Users.ToList();
             List<Post> dbLists = Repository.Posts;
+            dbLists.Reverse();
             ViewBag.userName = u.UserName;
             ViewBag.postCount = u.Posts.Count;
             return View(dbLists);
+
         }
 
         //Privacy view. Allows user to change quiz result privacy T/F
