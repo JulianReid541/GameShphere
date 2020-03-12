@@ -44,8 +44,7 @@ namespace GameSphere.Controllers
         {
             AppUser u = await CurrentUser;
             if (postMessage != null)
-            {
-                
+            {                
                 Post p = new Post()
                 {
                     UserName = u,
