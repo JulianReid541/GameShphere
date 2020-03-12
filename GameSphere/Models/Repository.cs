@@ -1,25 +1,36 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace GameSphere.Models
 {
-    public static class Repository
+    public class Repository : IRepository
     {
-        private static List<User> users = new List<User>();
+        private ApplicationDbContext context;
 
-        public static List<User> Users { get { return users; } }
-
-        public static void AddUser(User user)
+        public Repository(ApplicationDbContext appDbContext)
         {
-            Users.Add(user);
+            context = appDbContext;
+        }     
+
+        public List<Post> Posts {  get { return context.Posts
+                                                             .ToList(); } }
+
+        public void AddUser(AppUser user)
+        {
+            context.Users.Add(user);
+            context.SaveChanges();
         }
 
-        public static User GetUserByUserName(string username)
+        public void UpdateUser(AppUser u)
         {
-            User user = users.Find(u => u.UserName == username);
-            return user;
+            context.Users.Update(u);
+            context.SaveChanges();
         }
-    }
+
+        public void AddPost(Post p , AppUser u)
+        {
+            this.context.Posts.Add(p);
+            context.SaveChanges();          
+        }  
+    }    
 }

@@ -3,6 +3,19 @@ body {
     height: 100%;   
 }
 
+.caa{
+    margin-right: 15px;
+}
+
+.uep{
+    margin-right: 10px;
+}
+
+.sf{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
 body {
     display: -ms-flexbox;
     display: -webkit-box;

@@ -1,201 +1,109 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using GameSphere.Models;
-using System.Web;
-using System.Data;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace GameSphere.Controllers
-{  
+{
+    [Authorize]
     public class HomeController : Controller
-    {     
-        //TODO make pages look better looking and MAKE COMMENTS
-        //TODO write some tests 
-        //TODO use EF to make a database
-        //testingdata
-        #region
+    {
+        IRepository Repository;
+        private UserManager<AppUser> userManager;
 
-        public HomeController()
+        private Task<AppUser> CurrentUser =>
+            userManager.FindByNameAsync(HttpContext.User.Identity.Name);
+
+        public HomeController(IRepository r, UserManager<AppUser> userMgr)
         {
-            if(Repository.Users.Count == 0)
-            {
-                User test1 = new User()
-                {
-                    UserName = "test",
-                    Game = "Call of Duty",
-                    Console = "Xbox",
-                    Genre = "FPS",
-                    Platform = "Twitch",
-                    Privacy = true
-                };               
-                User test2 = new User()
-                {
-                    UserName = "test2",
-                    Game = "Halo 4",
-                    Console = "PC",
-                    Genre = "Horror",
-                    Platform = "YoutubeGaming",
-                    Privacy = false                  
-                };               
+            Repository = r;
+            userManager = userMgr;
+        }
+
+        //Homepage taking user object and displays posts and counts for user posts/follows/following
+        [HttpGet]
+        public async Task<IActionResult> Index()
+        {
+            List<AppUser> dbUsers = userManager.Users.ToList();
+            List<Post> dbLists = Repository.Posts;
+            dbLists.Reverse();
+            AppUser u = await CurrentUser;
+
+            ViewBag.userName = u.UserName;
+            ViewBag.postCount = u.Posts.Count;
+            return View(dbLists);
+        }
+
+        //Takes postmessage and adds user to post saves it to post
+        [HttpPost]
+        public async Task<IActionResult> Index(string postMessage)
+        {
+            AppUser u = await CurrentUser;
+            if (postMessage != null)
+            {                
                 Post p = new Post()
                 {
-                    User = test2,
-                    Message = "This new site is amazing"
+                    UserName = u,
+                    Message = postMessage
                 };
-                User test3 = new User()
-                {
-                    UserName = "test3",
-                    Game = "Halo 5",
-                    Console = "PC",
-                    Genre = "Horror",
-                    Platform = "YoutubeGaming",
-                    Privacy = true
-                };
-                Post p2 = new Post()
-                {
-                    User = test3,
-                    Message = "This is WAY COOLER THAN FACEBOOK"
-                };
-                test2.AddPost(p);
-                test3.AddPost(p2);
-                test1.AddFollowing(test2);
-                test1.AddFollowing(test3);
-                test1.AddFollower(test2);
-                test2.AddFollower(test1);
-                test2.AddFollowing(test1);
-                test3.AddFollower(test1);
-                Repository.Users.Add(test3);
-                Repository.Users.Add(test2);
-                Repository.Users.Add(test1);
-            }
-        }
-        #endregion
-        [HttpGet]
-        public IActionResult Index()
-        {         
-            return View();
-        }
-
-        [HttpPost]
-        public RedirectToActionResult Index(string u)
-        {
-            User user = Repository.GetUserByUserName(u);
-            TempData["signedInUser"] = u as string;
-            if (user == null)
-                return RedirectToAction("Index");
-            else
-                return RedirectToAction("HomePage", user);
-        }
-
-        [HttpGet]
-        public IActionResult HomePage(User user)
-        {
-            User u = Repository.GetUserByUserName(user.UserName);            
+                u.AddPost(p);
+                Repository.AddPost(p, u);
+                await userManager.UpdateAsync(u);
+            }          
+            List<AppUser> dbUsers = userManager.Users.ToList();
+            List<Post> dbLists = Repository.Posts;
+            dbLists.Reverse();
+            ViewBag.userName = u.UserName;
             ViewBag.postCount = u.Posts.Count;
-            ViewBag.followingCount = u.Following.Count;
-            ViewBag.followerCount = u.Followers.Count;
-            return View(u);
+            return View(dbLists);
+
         }
 
-        [HttpPost]
-        public RedirectToActionResult HomePage(string postMessage)
-        {
-            User u = Repository.GetUserByUserName(TempData["signedInUser"] as string);
-            TempData.Keep();
-            Post p = new Post()
-            {
-                User = u,
-                Message = postMessage
-            };
-
-            u.AddPost(p);
-            return RedirectToAction("HomePage", u);
-        }
-
-        [HttpGet]
-        public IActionResult SignUp()
-        {          
-            return View();
-        }
-
-        [HttpPost]
-        public RedirectToActionResult SignUp(string username, string game, string console,
-                                             string genre, string platform, bool privacy)
-        {
-            User user = new User();
-            user.UserName = username;
-            user.Game = game;
-            user.Console = console;
-            user.Genre = genre;
-            user.Platform = platform;
-            user.Privacy = privacy;
-            Repository.Users.Add(user);
-            return RedirectToAction("Index");
-        }
-
+        //Privacy view. Allows user to change quiz result privacy T/F
         [HttpGet]
         public IActionResult Privacy(string title)
-        {         
+        {
             return View("Privacy", title);
         }
 
+        //Changes user Privacy and redirects to homepage when done
         [HttpPost]
-        public RedirectToActionResult Privacy(string title, bool privacy)
+        public async Task<IActionResult> Privacy(string title, bool privacy)
         {
-            User user = Repository.GetUserByUserName(title);
-            user.changeUserPrivacy(privacy);
-            return RedirectToAction("Homepage", user);
+            AppUser user = await CurrentUser;
+            user.ChangeUserPrivacy(privacy);
+            await userManager.UpdateAsync(user);
+            return RedirectToAction("Index");
         }
 
-        public IActionResult PostList(string title)
+        //List of posts from user
+        public async Task<IActionResult> PostList(string title)
         {
-            List<Post> posts = new List<Post>();
-            User u = Repository.GetUserByUserName(title);
-            foreach (Post p in u.Posts)
-            {
-                posts.Add(p);
-            }
+            List<AppUser> dbUsers = userManager.Users.ToList();
+            List<Post> posts = Repository.Posts;
+            AppUser u = await userManager.FindByNameAsync(title);
+
             ViewBag.user = u.UserName;
-            return View(posts);
-        }
-
-        public IActionResult FollowingList(string title)
-        {
-            List<User> following = new List<User>();
-            User u = Repository.GetUserByUserName(title);
-            foreach (User f in u.Following)
-            {
-                following.Add(f);
-            }
-            ViewBag.user = u.UserName;
-            return View(following);
-        }
-
-        public IActionResult FollowersList(string title)
-        {
-            List<User> followers = new List<User>();
-            User u = Repository.GetUserByUserName(title);
-            foreach (User f in u.Followers)
-            {
-                followers.Add(f);
-            }
-            ViewBag.user = u.UserName;
-            return View(followers);
-        }
-
-        public IActionResult ProfilePage(string title)
-        {
-            User u = Repository.GetUserByUserName(title);
             return View(u);
         }
 
+        //Displays username and quiz results for selected user
+        public async Task<IActionResult> ProfilePage(string title)
+        {
+            AppUser u = await userManager.FindByNameAsync(title);
+            return View(u);
+        }
+
+        //List of all users on the site
         public IActionResult UserList()
         {
-            List<User> users = new List<User>();
-            foreach (User u in Repository.Users)
+            List<AppUser> users = new List<AppUser>();
+            List<AppUser> dbUsers = userManager.Users.ToList();
+            foreach (AppUser u in dbUsers)
             {
                 users.Add(u);
             }
@@ -204,53 +112,11 @@ namespace GameSphere.Controllers
             return View(users);
         }
 
-        public RedirectToActionResult Unfollow(string title)
-        {
-            User u = Repository.GetUserByUserName(title);
-            User u2 = Repository.GetUserByUserName(TempData["signedInUser"] as string);
-            TempData.Keep();
-            u2.RemoveFollow(u);
-            u.RemovingFollower(u2);
-            return RedirectToAction("HomePage", u2);
-        }       
-
-        public RedirectToActionResult Follow(string title)
-        {
-            User u = Repository.GetUserByUserName(title);
-            User u2 = Repository.GetUserByUserName(TempData["signedInUser"] as string);
-            TempData.Keep();
-            if (u2.UserName == u.UserName)
-            {                
-                return RedirectToAction("FollowResult1");
-            }
-            if (u2.Following.Contains(u))
-            {               
-                return RedirectToAction("FollowResult2");
-            }
-            else
-            {
-                u2.AddFollowing(u);
-                u.AddFollower(u2);
-            }               
-            return RedirectToAction("UserList");
-        }
-
-        public IActionResult FollowResult1()
-        {
-            ViewBag.followResult = "You can't follow yourself";
-            return View();
-        }
-
-        public IActionResult FollowResult2()
-        {
-            ViewBag.followResult = "You already follow that person";
-            return View();
-        }
-
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
+    
 }
